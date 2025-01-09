@@ -25,7 +25,7 @@ public class AppConfig {
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9094");
         props.put(ProducerConfig.ACKS_CONFIG, "all");
         props.put(TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG, "2");
-        props.put(ProducerConfig.RETRIES_CONFIG, 10); // попытается еще два раза если 10 реплики не аккнут прием сообщения (ack all, sync replicas 2)
+        props.put(ProducerConfig.RETRIES_CONFIG, 10); // попытается еще два 10 раз если реплики не аккнут прием сообщения (ack all, sync replicas 2)
         props.put(ProducerConfig.RETRY_BACKOFF_MS_CONFIG, 500); //чтобы не спамить кафку ставим тайм-аут
         props.put(ProducerConfig.RETRY_BACKOFF_MAX_MS_CONFIG, 5000); //если кафка отвалилась, то время тайм-аута вырастает до этого значения
         props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
@@ -55,7 +55,9 @@ public class AppConfig {
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9094");
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "rx-consumer");
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest"); //возможно? такой консюмер нужен для сбора событий, события до подключения могут и протухнуть
+        props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 1); // непонятно как кэш консюмера раздует хип в таком случае
+        props.put(ConsumerConfig.FETCH_MIN_BYTES_CONFIG, 1);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class.getName());
         return props;

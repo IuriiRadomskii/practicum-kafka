@@ -31,11 +31,14 @@ public class RxConsumer {
             consumer.subscribe(List.of(TOPIC));
             log.info("Starting rx consumer...");
             while (true) {
-                var records = consumer.poll(Duration.ofMillis(10)); //типа реактивный консюмер
+                var records = consumer.poll(Duration.ofMillis(10));
                 if (!records.isEmpty()) {
                     try {
                         if (!records.isEmpty()) {
-                            log.info("Got {} records for {}", records.count(), props.get(ConsumerConfig.GROUP_ID_CONFIG));
+                            log.info("Got {} records for {}, partitions: {}",
+                                    records.count(),
+                                    props.get(ConsumerConfig.GROUP_ID_CONFIG),
+                                    records.partitions());
                             messageHandler.handle(records);
                         }
                     } catch (Exception e) {

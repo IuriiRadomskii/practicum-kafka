@@ -33,9 +33,13 @@ public class Consumer {
             log.info("Starting consumer...");
             while (true) {
                 var records = consumer.poll(Duration.ofMillis(1000));
+                log.info("Polling ...");
                 try {
                     if (!records.isEmpty()) {
-                        log.info("Got {} records for {}", records.count(), props.get(ConsumerConfig.GROUP_ID_CONFIG));
+                        log.info("Got {} records for {}, partitions: {}",
+                                records.count(),
+                                props.get(ConsumerConfig.GROUP_ID_CONFIG),
+                                records.partitions());
                         messageHandler.handle(records);
                         consumer.commitSync();
                     }
