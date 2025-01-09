@@ -7,7 +7,6 @@ services:
     networks:
       - sprint_2_kafka_net
     environment:
-      - LEADER_HOST=kafka-0
       - NUMBER_OF_MESSAGES=100
       - WAIT_FOR_KAFKA=10
   ui:

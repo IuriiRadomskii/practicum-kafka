@@ -1,3 +1,8 @@
+### Build java app image
+```bash
+docker build -f .docker/Dockerfile -t sprint_2_app:latest .
+```
+
 ### Create network
 ```bash
 docker network create sprint_2_kafka_net

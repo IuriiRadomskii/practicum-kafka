@@ -6,6 +6,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.config.TopicConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import practicum.kafka.sprint.two.dto.TransactionStatus;
@@ -19,10 +20,13 @@ public class AppConfig {
 
     public static final String TOPIC = "trx_statuses";
 
+    @Value("${leader.host}")
+    private String leaderHost;
+
     @Bean
     public KafkaProducer<String, TransactionStatus> producer() {
         Properties props = new Properties();
-        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9094");
+        props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, leaderHost);
         props.put(ProducerConfig.ACKS_CONFIG, "all");
         props.put(TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG, "2");
         props.put(ProducerConfig.RETRIES_CONFIG, 10); // попытается еще два 10 раз если реплики не аккнут прием сообщения (ack all, sync replicas 2)
@@ -40,7 +44,7 @@ public class AppConfig {
     @Bean
     public Properties consumerProperties() {
         Properties props = new Properties();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9094");
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, leaderHost);
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "consumer");
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
@@ -52,7 +56,7 @@ public class AppConfig {
     @Bean
     public Properties rxConsumerProperties() {
         Properties props = new Properties();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9094");
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, leaderHost);
         props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "true");
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "rx-consumer");
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest"); //возможно? такой консюмер нужен для сбора событий, события до подключения могут и протухнуть
