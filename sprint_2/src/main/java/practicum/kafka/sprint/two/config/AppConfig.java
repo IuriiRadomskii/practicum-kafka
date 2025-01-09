@@ -20,7 +20,7 @@ public class AppConfig {
 
     public static final String TOPIC = "trx_statuses";
 
-    @Value("${leader.host}")
+    @Value("${leader.host:kafka-0:9092,kafka-1:9092,kafka-2:9092}")
     private String leaderHost;
 
     @Bean
