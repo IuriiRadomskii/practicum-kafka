@@ -18,6 +18,7 @@
 
     <modules>
         <module>sprint_2</module>
+        <module>sprint_3</module>
     </modules>
 
     <properties>
@@ -31,6 +32,11 @@
             <dependency>
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-clients</artifactId>
+                <version>3.9.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-streams</artifactId>
                 <version>3.9.0</version>
             </dependency>
 
