@@ -1,4 +1,4 @@
-package practicum.kafka.sprint.two.examples;
+package practicum.kafka.sprint.three.examples;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -16,8 +16,7 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
-import org.apache.kafka.streams.kstream.KTable;
-import org.apache.kafka.streams.kstream.Materialized;
+import org.apache.kafka.streams.kstream.Produced;
 import org.apache.kafka.streams.state.Stores;
 
 import java.time.Duration;
@@ -29,64 +28,71 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-public class SimpleKTableExample {
+public class SimpleKafkaStoreExample {
 
     static final ExecutorService executor = Executors.newFixedThreadPool(5);
     static final String LEADER_HOST = "localhost:9094,localhost:9095,localhost:9096";
-    static final int NUMBER_OF_MESSAGES = 50;
+    static final Integer NUMBER_OF_MESSAGES = 100;
 
     public static void main(String[] args) {
-        // Создание StreamsBuilder
-        StreamsBuilder builder = new StreamsBuilder();
+        try {
+            // Конфигурация Kafka Streams
+            Properties config = new Properties();
+            config.put(StreamsConfig.STATE_DIR_CONFIG, "C:\\Users\\urara\\IdeaProjects\\practicum-kafka\\sprint_3\\tmp");
+            config.put(StreamsConfig.APPLICATION_ID_CONFIG, "simple-kafka-streams-store-app");
+            config.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, LEADER_HOST);
+            config.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+            config.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
 
-        // Создание потока из Kafka-топика
-        KStream<String, String> stream = builder.stream("input_topic",
-                Consumed.with(Serdes.String(), Serdes.String()));
+            // Создаём топологию
+            StreamsBuilder builder = new StreamsBuilder();
 
-        // Преобразование потока в таблицу с помощью метода toTable()
-        KTable<String, String> table = stream.toTable(
-                Materialized.<String, String>
-                                as(Stores.persistentKeyValueStore("word_count_store"))
-                        .withKeySerde(Serdes.String())
-                        .withValueSerde(Serdes.String())
-        );
+            //Инициализируем state store
+            builder.addStateStore(
+                    Stores.keyValueStoreBuilder(
+                            Stores.inMemoryKeyValueStore("word_count_store"),
+                            Serdes.String(), // Key serde
+                            Serdes.Long()    // Value serde
+                    )
+            );
 
-        table
-                .groupBy(((key, value) -> {
-                    if (key.length() > UUID.randomUUID().toString().length()) {
-                        return new KeyValue<>(UUID.randomUUID(), "MORE_MORE" + value.toString());
-                    } else {
-                        return new KeyValue<>(UUID.randomUUID(), "LESS" + value.toString());
-                    }
-                }))
-                .count()
-                .toStream()
-                .map((key, value) -> {
-                    log.info("COUNTED: " + key + " : " + value);
-                    return new KeyValue<>(key, value + "NEW_VALUE");
-                }).to("output_topic");
 
-        startStream(builder, getConfig("ktable-app"));
-        startProduce();
-        startConsume();
+            // Создаём KStream из топика с входными данными
+            KStream<String, String> stream = builder.stream("input_topic",
+                    Consumed.with(Serdes.String(), Serdes.String()));
+
+
+            stream.flatMapValues(
+                            value -> {
+                                log.info("Stream consumed: {}", value);
+                                return List.of(value.split("\\W+"));
+                            })  // Разделить по символам, не относящимся к словам
+                    .groupBy((key, value) -> {
+                        log.info("GROUP: Key: {}, Value: {}", key, value);
+                        return value;
+                    })  // Группировка по словам
+                    .count()  // Количество появлений каждого слова
+                    .toStream()  // Вернуть обратно в стрим
+                    .map((key, value) -> {
+                        log.info("MAP: Key: {}, Value: {}", key, value);
+                        return new KeyValue<>(key.toUpperCase(), value);
+                    })
+                    .to("output_topic", Produced.valueSerde(Serdes.Long()));  // Отправить в топик для результатов
+
+            startStream(builder, config);
+            startProduce();
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
     }
 
-    public static Properties getConfig(String appName) {
-        Properties config = new Properties();
-        config.put(StreamsConfig.APPLICATION_ID_CONFIG, appName);
-        config.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, LEADER_HOST);
-        config.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-        config.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-        return config;
-    }
 
     static void startStream(StreamsBuilder builder, Properties config) {
         executor.submit(() -> {
             try (KafkaStreams streams = new KafkaStreams(builder.build(), config)) {
                 streams.start();
                 log.info("Kafka Streams приложение запущено успешно.");
-                while (true) {
-                }
+                while (true) {}
             }
         });
     }
@@ -98,7 +104,7 @@ public class SimpleKTableExample {
                             var future = producer.send(new ProducerRecord<>(
                                     "input_topic",
                                     UUID.randomUUID().toString(),
-                                    UUID.randomUUID().toString() + "-VALUE")
+                                    "foo bar bar")
                             );
                             try {
                                 var metadata = future.get(5, TimeUnit.SECONDS);
@@ -121,7 +127,7 @@ public class SimpleKTableExample {
     static void startConsume() {
         executor.submit(() -> {
             try (var consumer = consumer(LEADER_HOST)) {
-                consumer.subscribe(List.of("output_topic"));
+                consumer.subscribe(List.of("word_count_topic, output_topic"));
                 while (true) {
                     var result = consumer.poll(Duration.ofMillis(1000));
                     result.forEach(x -> log.info("\n\nReceived: {}\n\n", x));

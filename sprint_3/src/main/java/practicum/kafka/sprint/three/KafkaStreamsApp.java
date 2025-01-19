@@ -1,13 +1,13 @@
-package practicum.kafka.sprint.two;
+package practicum.kafka.sprint.three;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class KafkaSteamsApp {
+public class KafkaStreamsApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(KafkaSteamsApp.class, args);
+        SpringApplication.run(KafkaStreamsApp.class, args);
     }
 
 }

@@ -15,16 +15,16 @@ services:
       - sprint_3_kafka_net
 
   #ksqlDB
-  ksqldb-server:
-    image: confluentinc/ksqldb-server:latest
-    depends_on:
-      - kafka-0
-    environment:
-      KSQL_BOOTSTRAP_SERVERS: kafka-0:9092
-    ports:
-      - "8088:8088"
-    networks:
-      - sprint_3_kafka_net
+  #ksqldb-server:
+  #  image: confluentinc/ksqldb-server:latest
+  #  depends_on:
+  #    - kafka-0
+  #  environment:
+  #    KSQL_BOOTSTRAP_SERVERS: kafka-0:9092
+  #  ports:
+  #    - "8088:8088"
+  #  networks:
+  #    - sprint_3_kafka_net
 
   #ksqldb-cli:
   #  image: confluentinc/ksqldb-cli:latest

@@ -1,4 +1,4 @@
-package practicum.kafka.sprint.two.examples;
+package practicum.kafka.sprint.three.examples;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
