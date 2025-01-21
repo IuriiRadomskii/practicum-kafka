@@ -14,7 +14,7 @@ docker compose -p sprint_3_cluster -f ./.docker/docker-compose.yaml up -d
 
 ### Create kafka topic: get container_id of kafka-0 service. Use docker ps for it
 ```bash
-docker exec -it 82fa3de841d3 /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic user_messages --bootstrap-server kafka-0:9092 --partitions 3 --replication-factor 2
-docker exec -it 82fa3de841d3 /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic user_block_events --bootstrap-server kafka-0:9092 --partitions 3 --replication-factor 2
-docker exec -it 82fa3de841d3 /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic forbidden_words --bootstrap-server kafka-0:9092 --partitions 3 --replication-factor 2
+docker exec -it b8c9d204551f /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic user_messages --bootstrap-server kafka-0:9092 --partitions 3 --replication-factor 2
+docker exec -it b8c9d204551f /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic user_block_events --bootstrap-server kafka-0:9092 --replication-factor 2
+docker exec -it b8c9d204551f /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic forbidden_words --bootstrap-server kafka-0:9092 --replication-factor 2
 ```

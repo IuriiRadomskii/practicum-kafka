@@ -10,9 +10,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
-import practicum.kafka.sprint.three.serdes.JsonSerializer;
+import practicum.kafka.sprint.three.serdes.AbstractJsonSerializer;
 import practicum.kafka.sprint.three.model.UserBlockEvent;
 import practicum.kafka.sprint.three.model.UserMessage;
+import practicum.kafka.sprint.three.serdes.UserBlockEventSerializer;
+import practicum.kafka.sprint.three.serdes.UserMessageSerializer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +43,7 @@ public class ProducersConfig {
     public KafkaTemplate<UUID, UserMessage> messageTemplate() {
         var props = commonProps();
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, UUIDSerializer.class.getName());
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class.getName());
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, UserMessageSerializer.class.getName());
         var factory = new DefaultKafkaProducerFactory<UUID, UserMessage>(props);
         var template = new KafkaTemplate<>(factory, props);
         template.setDefaultTopic("user_messages");
@@ -52,7 +54,7 @@ public class ProducersConfig {
     public KafkaTemplate<UUID, UserBlockEvent> userBlockEventsTemplate() {
         var props = commonProps();
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, UUIDSerializer.class.getName());
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class.getName());
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, UserBlockEventSerializer.class.getName());
         var factory = new DefaultKafkaProducerFactory<UUID, UserBlockEvent>(props);
         var template = new KafkaTemplate<>(factory, props);
         template.setDefaultTopic("user_block_events");
@@ -60,11 +62,11 @@ public class ProducersConfig {
     }
 
     @Bean
-    public KafkaTemplate<UUID, String> forbiddenWordsTemplate() {
+    public KafkaTemplate<String, String> forbiddenWordsTemplate() {
         var props = commonProps();
-        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, UUIDSerializer.class.getName());
+        props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        var factory = new DefaultKafkaProducerFactory<UUID, String>(props);
+        var factory = new DefaultKafkaProducerFactory<String, String>(props);
         var template = new KafkaTemplate<>(factory, props);
         template.setDefaultTopic("forbidden_words");
         return template;

@@ -6,12 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Serializer;
 
 @Slf4j
-public class JsonSerializer implements Serializer<Object> {
+public abstract class AbstractJsonSerializer<T> implements Serializer<T> {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
-    @Override
-    public byte[] serialize(String topic, Object data) {
+    protected byte[] getJsonFromPojo(Object data) {
         try {
             return mapper.writeValueAsBytes(data);
         } catch (JsonProcessingException e) {
