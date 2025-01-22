@@ -2,6 +2,7 @@ package practicum.kafka.sprint.three;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -20,9 +21,8 @@ public class FakeLoadTask implements CommandLineRunner {
     private final KafkaTemplate<UUID, UserBlockEvent> userBlockEventTemplate;
     private final KafkaTemplate<String, String> forbiddenWordsTemplate;
 
-    private static UUID uuid() {
-        return UUID.randomUUID();
-    }
+    @Value("${fake.load.messages:500}")
+    private int numberOfMessages;
 
     @Override
     public void run(String... args) {
@@ -34,7 +34,7 @@ public class FakeLoadTask implements CommandLineRunner {
         forbiddenWordsTemplate.send(StreamsConfiguration.FORBIDDEN_WORDS_TOPIC, "BAZ", "BAZ");
         userBlockEventTemplate.send(StreamsConfiguration.USER_BLOCK_EVENTS_TOPIC, receiver1, new UserBlockEvent(sender));
 
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < numberOfMessages; i++) {
             userMessageTemplate.send(StreamsConfiguration.USER_MESSAGES_TOPIC, sender, new UserMessage(receiver1, "FOO BAR BAR"));
             userMessageTemplate.send(StreamsConfiguration.USER_MESSAGES_TOPIC, sender, new UserMessage(receiver2, "BAR BAR BAZ"));
         }

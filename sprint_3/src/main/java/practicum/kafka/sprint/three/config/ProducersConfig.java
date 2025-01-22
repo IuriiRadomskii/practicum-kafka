@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static practicum.kafka.sprint.three.config.StreamsConfiguration.*;
+
 @Configuration
 @RequiredArgsConstructor
 public class ProducersConfig {
@@ -46,7 +48,7 @@ public class ProducersConfig {
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, UserMessageSerializer.class.getName());
         var factory = new DefaultKafkaProducerFactory<UUID, UserMessage>(props);
         var template = new KafkaTemplate<>(factory, props);
-        template.setDefaultTopic("user_messages");
+        template.setDefaultTopic(USER_MESSAGES_TOPIC);
         return template;
     }
 
@@ -57,7 +59,7 @@ public class ProducersConfig {
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, UserBlockEventSerializer.class.getName());
         var factory = new DefaultKafkaProducerFactory<UUID, UserBlockEvent>(props);
         var template = new KafkaTemplate<>(factory, props);
-        template.setDefaultTopic("user_block_events");
+        template.setDefaultTopic(USER_BLOCK_EVENTS_TOPIC);
         return template;
     }
 
@@ -68,7 +70,7 @@ public class ProducersConfig {
         props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         var factory = new DefaultKafkaProducerFactory<String, String>(props);
         var template = new KafkaTemplate<>(factory, props);
-        template.setDefaultTopic("forbidden_words");
+        template.setDefaultTopic(FORBIDDEN_WORDS_TOPIC);
         return template;
     }
 
