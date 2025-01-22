@@ -20,7 +20,7 @@ public class ForbiddenWordsStoreProcessor implements Processor<String, String, S
 
     @Override
     public void process(Record<String, String> record) {
-        log.info("Added record to store: {}", record);
+        log.info("Added forbidden word: {}", record);
         store.put(record.key(), record.value());
     }
 

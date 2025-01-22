@@ -26,16 +26,17 @@ public class UserBlockProcessor implements Processor<UUID, UserMessage, UUID, Us
 
     @Override
     public void process(Record<UUID, UserMessage> record) {
+        log.info("Block user processor record: {}", record);
         var sender = record.key();
+        log.info("Sender {}", sender.toString());
         var receiver = record.value().to();
+        log.info("Receiver: {}", receiver);
         var blockedUsers = blockedUsersStore.get(receiver);
-        if (blockedUsers != null && !blockedUsers.isEmpty()) {
-            if (!blockedUsers.contains(sender)) {
-                context.forward(record);
-            } else {
-                log.info("Receiver {} blocked Sender {}", receiver, sender);
-            }
+        log.info("Blocked users: {}", blockedUsers);
+        if (blockedUsers == null || blockedUsers.isEmpty() || !blockedUsers.contains(sender)) {
+            context.forward(record);
         }
+        log.info("Receiver {} blocked Sender {}", receiver, sender);
     }
 
     @Override

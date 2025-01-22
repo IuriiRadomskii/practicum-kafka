@@ -26,15 +26,17 @@ public class FakeLoadTask implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        var sender = uuid();
-        var receiver = uuid();
+        var sender = UUID.fromString("f1a1111a-3702-45e5-bf03-20c47375cbf3");
+        var receiver1 = UUID.fromString("f2b2222b-3702-45e5-bf03-20c47375cbf3");
+        var receiver2 = UUID.fromString("f3c3333c-3702-45e5-bf03-20c47375cbf3");
 
         forbiddenWordsTemplate.send(StreamsConfiguration.FORBIDDEN_WORDS_TOPIC, "FOO", "FOO");
         forbiddenWordsTemplate.send(StreamsConfiguration.FORBIDDEN_WORDS_TOPIC, "BAZ", "BAZ");
-        userBlockEventTemplate.send(StreamsConfiguration.USER_BLOCK_EVENTS_TOPIC, receiver, new UserBlockEvent(sender));
+        userBlockEventTemplate.send(StreamsConfiguration.USER_BLOCK_EVENTS_TOPIC, receiver1, new UserBlockEvent(sender));
 
-        for (int i = 0; i < 100; i++) {
-            userMessageTemplate.send(StreamsConfiguration.USER_MESSAGES_TOPIC, sender, new UserMessage(receiver, "FOO BAR BAZ"));
+        for (int i = 0; i < 500; i++) {
+            userMessageTemplate.send(StreamsConfiguration.USER_MESSAGES_TOPIC, sender, new UserMessage(receiver1, "FOO BAR BAR"));
+            userMessageTemplate.send(StreamsConfiguration.USER_MESSAGES_TOPIC, sender, new UserMessage(receiver2, "BAR BAR BAZ"));
         }
     }
 }

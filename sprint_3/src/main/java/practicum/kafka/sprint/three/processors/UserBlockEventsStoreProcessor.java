@@ -7,6 +7,7 @@ import org.apache.kafka.streams.processor.api.Record;
 import org.apache.kafka.streams.state.KeyValueStore;
 import practicum.kafka.sprint.three.model.UserBlockEvent;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -26,13 +27,15 @@ public class UserBlockEventsStoreProcessor implements Processor<UUID, UserBlockE
 
     @Override
     public void process(Record<UUID, UserBlockEvent> record) {
-        var set = store.get(record.key());
-        if (set == null) {
-            store.put(record.key(), new HashSet<>());
-            return;
+        var blockedUsers = store.get(record.key());
+        if (blockedUsers == null) {
+            log.info("Blocked user store does not exist for user {}", record.key());
+            blockedUsers = Collections.synchronizedSet(new HashSet<>());
+            store.put(record.key(), blockedUsers);
         }
-        set.add(record.value().blockedUser());
-        store.put(record.key(), set);
+        blockedUsers.add(record.value().blockedUser());
+        log.info("User {} blocked user {}", record.key(), record.value().blockedUser());
+        store.put(record.key(), blockedUsers);
     }
 
     @Override
