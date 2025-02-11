@@ -1,3 +1,4 @@
+/*
 package practicum.kafka.sprint.four;
 
 import jakarta.servlet.http.HttpServlet;
@@ -36,4 +37,4 @@ public class MetricsServlet extends HttpServlet {
         response.getWriter().write(responseText);
     }
 
-}
+}*/

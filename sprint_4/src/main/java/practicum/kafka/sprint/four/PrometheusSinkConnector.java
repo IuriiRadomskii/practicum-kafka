@@ -73,10 +73,4 @@ public class PrometheusSinkConnector extends SinkConnector {
         return portAndPath.substring(0, portAndPath.indexOf("/"));
     }
 
-    public static void main(String[] args) {
-        var url = "http://localhost:8080/metrics";
-        System.out.println(getPath(url));
-        System.out.println(getPort(url));
-    }
-
 }

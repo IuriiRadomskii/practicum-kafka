@@ -1,3 +1,4 @@
+/*
 package practicum.kafka.sprint.four;
 
 import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
@@ -83,4 +84,4 @@ public class PrometheusHttpServer {
         );
     }
 
-}
+}*/

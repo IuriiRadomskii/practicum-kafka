@@ -20,7 +20,7 @@ public class PrometheusSinkTask extends SinkTask {
 
     private static final Logger log = LoggerFactory.getLogger(PrometheusSinkTask.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private PrometheusHttpServer httpServer;
+    //private PrometheusHttpServer httpServer;
     private List<String> metricNames;
 
     @Override
@@ -32,7 +32,7 @@ public class PrometheusSinkTask extends SinkTask {
     public void start(Map<String, String> map) {
         String path = map.get(LISTENER_PATH);
         int port = Integer.parseInt(map.get(LISTENER_PORT));
-        httpServer = PrometheusHttpServer.getInstance(path, port);
+        //httpServer = PrometheusHttpServer.getInstance(path, port);
         metricNames = Arrays.stream(map.get(METRIC_NAMES).split(",")).toList();
     }
 
@@ -53,7 +53,10 @@ public class PrometheusSinkTask extends SinkTask {
                     recordValue,
                     new TypeReference<Map<String, MetricEvent>>() {
                     });
-            metricNames.forEach(name -> httpServer.addMetric(name, metrics.get(name)));
+            metricNames.forEach(name -> {
+                //httpServer.addMetric(name, metrics.get(name));
+                log.info("Metrics are nandled: {}", metrics.get(name));
+            });
         } catch (Exception e) {
             log.error("Unable to parse record: {}", e.getMessage(), e);
         }
