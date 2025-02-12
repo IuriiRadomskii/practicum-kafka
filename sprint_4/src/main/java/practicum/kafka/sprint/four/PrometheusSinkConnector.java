@@ -13,7 +13,6 @@ import java.util.Map;
 public class PrometheusSinkConnector extends SinkConnector {
 
     private static final Logger log = LoggerFactory.getLogger(PrometheusSinkConnector.class);
-    public static final String METRIC_NAMES = "metric.names";
     public static final String PROMETHEUS_LISTENER_URL = "prometheus.listener.url";
     public static final String LISTENER_PATH = "url";
     public static final String LISTENER_PORT = "port";
@@ -37,7 +36,6 @@ public class PrometheusSinkConnector extends SinkConnector {
         List<Map<String, String>> configs = new ArrayList<>();
         for (int i = 0; i < maxTasks; i++) {
             configs.add(Map.of(
-                    METRIC_NAMES, props.get(METRIC_NAMES),
                     LISTENER_PATH, getPath(props.get(PROMETHEUS_LISTENER_URL)),
                     LISTENER_PORT, getPort(props.get(PROMETHEUS_LISTENER_URL)))
             );

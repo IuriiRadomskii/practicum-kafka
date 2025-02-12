@@ -110,6 +110,7 @@ services:
       context: ./kafka-connect
     ports:
       - "8083:8083"
+      - "8384:8384"
       - "9875:9875"
       - "9876:9876"
     depends_on:

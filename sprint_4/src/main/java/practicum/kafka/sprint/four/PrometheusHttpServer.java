@@ -1,9 +1,7 @@
-/*
 package practicum.kafka.sprint.four;
 
-import org.eclipse.jetty.ee10.servlet.ServletContextHandler;
-import org.eclipse.jetty.ee10.servlet.ServletHolder;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.ServerConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,9 +42,10 @@ public class PrometheusHttpServer {
         var runnerThread = new Thread(() -> {
             log.info("Starting prometheus http server on port {}", port);
             server = new Server(port);
-            ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
-            context.addServlet(new ServletHolder(new MetricsServlet(buffer)), path);
-            server.setHandler(context);
+            ServerConnector serverConnector = new ServerConnector(server);
+            server.addConnector(serverConnector);
+            var handler = new MetricsServletHandler(new MetricsServlet(buffer), path);
+            server.setHandler(handler);
             try {
                 server.start();
                 log.info("Started prometheus http server on port {}", port);
@@ -84,4 +83,4 @@ public class PrometheusHttpServer {
         );
     }
 
-}*/
+}

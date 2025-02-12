@@ -1,9 +1,8 @@
-/*
 package practicum.kafka.sprint.four;
 
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,9 +31,8 @@ public class MetricsServlet extends HttpServlet {
             }
         });
         var responseText = sb.toString();
-        log.info("GET /metrics " + responseText);
         response.setContentType("text/plain");
         response.getWriter().write(responseText);
     }
 
-}*/
+}
