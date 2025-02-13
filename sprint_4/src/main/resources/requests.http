@@ -1,0 +1,29 @@
+###
+PUT http://localhost:8083/connectors/custom-prometheus-connector/config
+Content-Type: application/json
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "connector.class": "practicum.kafka.sprint.four.connector.PrometheusSinkConnector",
+  "tasks.max": "1",
+  "prometheus.listener.path": "/metrics",
+  "prometheus.listener.port": "8384",
+  "topics": "metrics-event-topic",
+  "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+  "value.converter": "org.apache.kafka.connect.storage.StringConverter",
+  "value.converter.schemas.enable": "false",
+  "metric.names": "Alloc,FreeMemory,TotalMemory"
+}
+
+###
+DELETE http://localhost:8083/connectors/custom-prometheus-connector
+###
+
+PUT http://localhost:8083/connectors/custom-prometheus-connector/start
+
+###
+GET http://localhost:8083/connectors
+###
+GET http://localhost:8083/connectors/custom-prometheus-connector/status
