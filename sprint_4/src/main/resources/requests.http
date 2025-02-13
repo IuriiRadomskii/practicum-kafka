@@ -13,8 +13,7 @@ Accept: */*
   "topics": "metrics-event-topic",
   "key.converter": "org.apache.kafka.connect.storage.StringConverter",
   "value.converter": "org.apache.kafka.connect.storage.StringConverter",
-  "value.converter.schemas.enable": "false",
-  "metric.names": "Alloc,FreeMemory,TotalMemory"
+  "value.converter.schemas.enable": "false"
 }
 
 ###

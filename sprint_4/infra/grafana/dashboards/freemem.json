@@ -1,13 +1,13 @@
 {
-  "id": 4,
+  "id": 2,
   "gridPos": {
-    "h": 8,
+    "h": 9,
     "w": 12,
     "x": 0,
     "y": 0
   },
   "type": "timeseries",
-  "title": "Fr﻿eeMemory",
+  "title": "Fale Metrics",
   "fieldConfig": {
     "defaults": {
       "custom": {
@@ -70,11 +70,19 @@
   },
   "targets": [
     {
-      "exemplar": true,
-      "expr": "Fr﻿eeMemory",
-      "interval": "",
+      "expr": "TotalMemory",
       "legendFormat": "",
+      "interval": "",
+      "exemplar": true,
       "refId": "A"
+    },
+    {
+      "expr": "FreeMemory",
+      "legendFormat": "",
+      "interval": "",
+      "exemplar": true,
+      "refId": "B",
+      "hide": false
     }
   ],
   "datasource": null
