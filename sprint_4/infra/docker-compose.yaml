@@ -18,21 +18,21 @@ services:
     networks:
       - proxynet
 
-  #postgres:
-  #  image: debezium/postgres:16
-  #  hostname: postgres
-  #  container_name: postgres
-  #  ports:
-  #    - "5432:5432"
-  #  environment:
-  #    POSTGRES_USER: postgres-user
-  #    POSTGRES_PASSWORD: postgres-pw
-  #    POSTGRES_DB: customers
-  #  volumes:
-  #    - ./postgres/custom-config.conf:/etc/postgresql/postgresql.conf
-  #  command: postgres -c config_file=/etc/postgresql/postgresql.conf
-  #  networks:
-  #    - proxynet
+  postgres:
+    image: debezium/postgres:16
+    hostname: postgres
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres-user
+      POSTGRES_PASSWORD: postgres-pw
+      POSTGRES_DB: customers
+    volumes:
+      - ./postgres/custom-config.conf:/etc/postgresql/postgresql.conf
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    networks:
+      - proxynet
 
   ui:
     image: provectuslabs/kafka-ui:v0.7.0

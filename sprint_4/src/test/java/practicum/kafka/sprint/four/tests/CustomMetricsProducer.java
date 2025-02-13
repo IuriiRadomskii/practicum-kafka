@@ -14,12 +14,11 @@ import practicum.kafka.sprint.four.connector.MetricEvent;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
 
 public class CustomMetricsProducer {
 
-    private static final int METRICS_COUNT = 100;
+    private static final int METRICS_COUNT = 300;
     private static final String TOPIC = "metrics-event-topic";
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final Logger log = LoggerFactory.getLogger(CustomMetricsProducer.class);
