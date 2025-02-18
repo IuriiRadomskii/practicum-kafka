@@ -1,4 +1,4 @@
-package practicum.kafka.sprint.four.tests;
+package practicum.kafka.sprint.five.tests;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,7 +10,6 @@ import org.apache.kafka.common.serialization.Serializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import practicum.kafka.sprint.four.connector.MetricEvent;
 
 import java.util.HashMap;
 import java.util.Map;
