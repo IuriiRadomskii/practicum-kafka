@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import practicum.kafka.sprint.five.components.Consumer;
-import practicum.kafka.sprint.five.components.RxConsumer;
 import practicum.kafka.sprint.five.components.TransactionStatusProducer;
 import practicum.kafka.sprint.five.dto.TransactionStatus;
 
@@ -28,7 +27,6 @@ public class FakeLoadTask implements CommandLineRunner {
 
     private final TransactionStatusProducer transactionStatusProducer;
     private final Consumer consumer;
-    private final RxConsumer rxConsumer;
     private final ExecutorService executorService = Executors.newFixedThreadPool(3);
 
     @Value("${number.of.messages}")
@@ -56,8 +54,8 @@ public class FakeLoadTask implements CommandLineRunner {
                 emulateLoad();
                 transactionStatusProducer.send(TOPIC, getRandomTransactionStatus());
             }
+            System.exit(1);
         });
-        executorService.submit(consumer::consume);
-        executorService.submit(rxConsumer::consume);
     }
+
 }
