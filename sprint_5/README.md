@@ -41,11 +41,11 @@ docker start kafka-2
 ```
 
 # TASK_2: SSL/TLS
+#### Delete task_1 related containers and volumes
 #### All commands are executed on local Ubuntu wsl subsystem. openssl utility and jre21 are required
 #### see file ./infra/task_2/make_certs.sh
-#### Copy generated files to ./infra/task_2/certs directory
+#### Copy generated dirs to ./infra/task_2 directory
 
-# TASK_1: Cluster topic reassignment
 ### Create kafka network
 ```bash
 docker network create proxynet_task_2
@@ -54,4 +54,24 @@ docker network create proxynet_task_2
 ### Up kafka cluster
 ```bash
 docker compose -p sprint_5_task_2 -f ./infra/docker-compose-task-2.yaml up -d
+```
+
+### Smoke-test: kafka-ui can collect metadata about cluster
+
+### Create kafka topics: topic-1, topic-2
+```bash
+docker exec -it kafka-0 /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic topic-1 --bootstrap-server kafka-0:9091 --partitions 3 --replication-factor 3
+docker exec -it kafka-0 /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic topic-2 --bootstrap-server kafka-0:9091 --partitions 3 --replication-factor 3
+```
+
+### Add entries to ACL
+```bash
+docker exec -it kafka-0 /opt/bitnami/kafka/bin/kafka-acls.sh --bootstrap-server=kafka-0:9091 --add --allow-principal User:PRODUCER --operation Write --topic topic-1
+```
+docker exec -it kafka-0 /opt/bitnami/kafka/bin/kafka-acls.sh --bootstrap-server=kafka-0:9091 --add --allow-principal User:PRODUCER --operation Describe --topic topic-1
+docker exec -it kafka-0 /opt/bitnami/kafka/bin/kafka-acls.sh --bootstrap-server=kafka-0:9091 --add --allow-principal User:CONSUMER --operation Read --topic topic-1
+docker exec -it kafka-0 /opt/bitnami/kafka/bin/kafka-acls.sh --bootstrap-server=kafka-0:9091 --add --allow-principal User:CONSUMER --operation Describe --topic topic-1
+
+docker exec -it kafka-0 /opt/bitnami/kafka/bin/kafka-acls.sh --bootstrap-server=kafka-0:9091 --add --allow-principal User:PRODUCER --operation Write --topic topic-2
+docker exec -it kafka-0 /opt/bitnami/kafka/bin/kafka-acls.sh --bootstrap-server=kafka-0:9091 --add --allow-principal User:PRODUCER --operation Describe --topic topic-2
 
