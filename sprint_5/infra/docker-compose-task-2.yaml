@@ -30,6 +30,7 @@ x-kafka-common-env: &kafka-common-env
   KAFKA_CFG_SSL_KEYSTORE_PASSWORD: password
 
   KAFKA_CFG_AUTHORIZATION_ENABLED: true
+  KAFKA_CFG_AUTHORIZER_CLASS_NAME: org.apache.kafka.metadata.authorizer.StandardAuthorizer
   KAFKA_CFG_SUPER_USERS: User:CN=kafka-0,User:CN=kafka-1,User:CN=kafka-2
 
 services:
