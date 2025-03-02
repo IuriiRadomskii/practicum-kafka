@@ -1,107 +1,94 @@
 version: "3.5"
 
-x-kafka-common: &kafka-common
-  image: bitnami/kafka:3.7
-  restart: none
-  networks:
-    - proxynet_task_2
-
-x-kafka-common-env: &kafka-common-env
-  KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: true
-  KAFKA_KRAFT_CLUSTER_ID: practicum
-  KAFKA_ENABLE_KRAFT: yes
-  KAFKA_CFG_PROCESS_ROLES: broker,controller
-  KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 0@kafka-0:9093,1@kafka-1:9093,2@kafka-2:9093
-  KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
-  CONTROLLER_LISTENER_NAME_CONTROLLER_SECURITY_PROTOCOL: SSL
-  CONTROLLER_LISTENER_NAME_CONTROLLER_SSL_KEYSTORE_LOCATION: /bitnami/kafka/config/certs/kafka.keystore.jks
-
-  KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,BROKER:SSL,CONTROLLER:SSL,EXTERNAL:SSL
-  KAFKA_CFG_INTER_BROKER_LISTENER_NAME: BROKER
-
-  KAFKA_CFG_SSL_ENABLED_PROTOCOL: TLSv1.2
-  KAFKA_CFG_TRUSTSTORE_TYPE: JKS
-  KAFKA_CFG_KEYSTORE_TYPE: JKS
-  KAFKA_CFG_SSL_CLIENT_AUTH: required
-  KAFKA_CFG_SSL_TRUSTSTORE_PASSWORD: password
-  KAFKA_CFG_SSL_TRUSTSTORE_LOCATION: /bitnami/kafka/config/certs/kafka.truststore.jks
-  KAFKA_CFG_SSL_KEYSTORE_LOCATION: /bitnami/kafka/config/certs/kafka.keystore.jks
-  KAFKA_CFG_SSL_KEY_PASSWORD: password
-  KAFKA_CFG_SSL_KEYSTORE_PASSWORD: password
-
-  KAFKA_CFG_AUTHORIZATION_ENABLED: true
-  KAFKA_CFG_AUTHORIZER_CLASS_NAME: org.apache.kafka.metadata.authorizer.StandardAuthorizer
-  KAFKA_CFG_SUPER_USERS: User:CN=kafka-0,User:CN=kafka-1,User:CN=kafka-2
-
 services:
-
-  kafka-0: #PLAINTEXT is for kafka-topics.sh utility
-    <<: *kafka-common
-    container_name: kafka-0
+  zookeeper:
     ports:
-      - "127.0.0.1:9094:9094"
+      - 22181:2181
+    container_name: zookeeper
+    networks:
+      - confluent
+    image: confluentinc/cp-zookeeper:7.4.4
     environment:
-      <<: *kafka-common-env
-      KAFKA_CFG_NODE_ID: 0
-      KAFKA_CFG_LISTENERS: PLAINTEXT://:9091,BROKER://kafka-0:9092,CONTROLLER://:9093,EXTERNAL://:9094
-      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka-0:9091,BROKER://kafka-0:9092,EXTERNAL://127.0.0.1:9094
-    volumes:
-      - kafka_0_data_sprint_5_task_2:/bitnami/kafka
-      - ./task_2/kafka-0:/bitnami/kafka/config/certs
+      ZOOKEEPER_CLIENT_PORT: 2181
 
   kafka-1:
-    <<: *kafka-common
+    image: confluentinc/cp-kafka:7.4.4
+    networks:
+      - confluent
+    depends_on:
+      - zookeeper
     container_name: kafka-1
     ports:
-      - "127.0.0.1:9095:9095"
+      - "9093:9093"
     environment:
-      <<: *kafka-common-env
-      KAFKA_CFG_NODE_ID: 1
-      KAFKA_CFG_LISTENERS: BROKER://kafka-1:9092,CONTROLLER://:9093,EXTERNAL://:9095
-      KAFKA_CFG_ADVERTISED_LISTENERS: BROKER://kafka-1:9092,EXTERNAL://127.0.0.1:9095
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:SSL
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_SSL_KEYSTORE_LOCATION: /etc/kafka/secrets/kafka.keystore.jks
+      KAFKA_SSL_KEYSTORE_PASSWORD: password
+      KAFKA_SSL_TRUSTSTORE_LOCATION: /etc/kafka/secrets/kafka.truststore.jks
+      KAFKA_SSL_TRUSTSTORE_PASSWORD: password
+      KAFKA_SSL_KEYSTORE_CREDENTIALS: credentials
+      KAFKA_SSL_KEY_PASSWORD: password
+      KAFKA_SSL_CLIENT_AUTH: required
+      KAFKA_SSL_KEY_CREDENTIALS: credentials
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,EXTERNAL://localhost:9093
     volumes:
-      - kafka_1_data_sprint_5_task_2:/bitnami/kafka
-      - ./task_2/kafka-1:/bitnami/kafka/config/certs
+      - ./task_2/kafka-1:/etc/kafka/secrets
 
   kafka-2:
-    <<: *kafka-common
+    image: confluentinc/cp-kafka:7.4.4
+    networks:
+      - confluent
+    depends_on:
+      - zookeeper
     container_name: kafka-2
     ports:
-      - "127.0.0.1:9096:9096"
+      - "9094:9094"
     environment:
-      <<: *kafka-common-env
-      KAFKA_CFG_NODE_ID: 2
-      KAFKA_CFG_LISTENERS: BROKER://kafka-2:9092,CONTROLLER://:9093,EXTERNAL://:9096
-      KAFKA_CFG_ADVERTISED_LISTENERS: BROKER://kafka-2:9092,EXTERNAL://127.0.0.1:9096
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:SSL
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_SSL_KEYSTORE_LOCATION: /etc/kafka/secrets/kafka.keystore.jks
+      KAFKA_SSL_KEYSTORE_PASSWORD: password
+      KAFKA_SSL_TRUSTSTORE_LOCATION: /etc/kafka/secrets/kafka.truststore.jks
+      KAFKA_SSL_TRUSTSTORE_PASSWORD: password
+      KAFKA_SSL_KEYSTORE_CREDENTIALS: credentials
+      KAFKA_SSL_KEY_PASSWORD: password
+      KAFKA_SSL_CLIENT_AUTH: required
+      KAFKA_SSL_KEY_CREDENTIALS: credentials
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,EXTERNAL://localhost:9094
     volumes:
-      - kafka_2_data_sprint_5_task_2:/bitnami/kafka
-      - ./task_2/kafka-2:/bitnami/kafka/config/certs
+      - ./task_2/kafka-2:/etc/kafka/secrets
 
-  ui:
-    image: provectuslabs/kafka-ui:v0.7.0
-    restart: always
-    ports:
-      - "127.0.0.1:8086:8080"
-    environment:
-      KAFKA_CLUSTERS_0_NAME: "kraft"
-      KAFKA_CLUSTERS_0_BOOTSTRAP_SERVERS: kafka-0:9092
-      KAFKA_CLUSTERS_0_PROPERTIES_SECURITY_PROTOCOL: "SSL"
-      KAFKA_CLUSTERS_0_PROPERTIES_SSL_KEYSTORE_LOCATION: /ui_certs/kafka-client.jks
-      KAFKA_CLUSTERS_0_PROPERTIES_SSL_KEYSTORE_PASSWORD: "password"
-      KAFKA_CLUSTERS_0_PROPERTIES_SSL_TRUSTSTORE_LOCATION: /ui_certs/client.truststore.jks
-      KAFKA_CLUSTERS_0_PROPERTIES_SSL_TRUSTSTORE_PASSWORD: "password"
-      KAFKA_CLUSTERS_0_PROPERTIES_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: ''
+  kafka-3:
+    image: confluentinc/cp-kafka:7.4.4
     networks:
-      - proxynet_task_2
+      - confluent
+    depends_on:
+      - zookeeper
+    container_name: kafka-3
+    ports:
+      - "9095:9095"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:SSL
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_SSL_KEYSTORE_LOCATION: /etc/kafka/secrets/kafka.keystore.jks
+      KAFKA_SSL_KEYSTORE_PASSWORD: password
+      KAFKA_SSL_TRUSTSTORE_LOCATION: /etc/kafka/secrets/kafka.truststore.jks
+      KAFKA_SSL_TRUSTSTORE_PASSWORD: password
+      KAFKA_SSL_KEYSTORE_CREDENTIALS: credentials
+      KAFKA_SSL_KEY_PASSWORD: password
+      KAFKA_SSL_CLIENT_AUTH: required
+      KAFKA_SSL_KEY_CREDENTIALS: credentials
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,EXTERNAL://localhost:9095
     volumes:
-      - ./task_2/client_certs:/ui_certs
+      - ./task_2/kafka-3:/etc/kafka/secrets
 
 networks:
-  proxynet_task_2:
-    name: proxynet_task_2
-    external: true
-
-volumes:
-  kafka_0_data_sprint_5_task_2:
-  kafka_1_data_sprint_5_task_2:
-  kafka_2_data_sprint_5_task_2:
+  confluent:
+    driver: bridge

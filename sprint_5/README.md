@@ -46,11 +46,6 @@ docker start kafka-2
 #### see file ./infra/task_2/make_certs.sh
 #### Copy generated dirs to ./infra/task_2 directory
 
-### Create kafka network
-```bash
-docker network create proxynet_task_2
-```
-
 ### Up kafka cluster
 ```bash
 docker compose -p sprint_5_task_2 -f ./infra/docker-compose-task-2.yaml up -d
