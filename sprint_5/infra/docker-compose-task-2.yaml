@@ -1,5 +1,29 @@
 version: "3.5"
 
+x-common: &x-common
+  KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:SASL_SSL
+  KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+
+  KAFKA_SSL_KEYSTORE_LOCATION: /etc/kafka/secrets/kafka.keystore.jks
+  KAFKA_SSL_KEYSTORE_PASSWORD: password
+  KAFKA_SSL_TRUSTSTORE_LOCATION: /etc/kafka/secrets/kafka.truststore.jks
+  KAFKA_SSL_TRUSTSTORE_PASSWORD: password
+  KAFKA_SSL_KEYSTORE_CREDENTIALS: credentials
+  KAFKA_SSL_KEY_PASSWORD: password
+  KAFKA_SSL_CLIENT_AUTH: required
+  KAFKA_SSL_KEY_CREDENTIALS: credentials
+
+  KAFKA_LISTENER_NAME_BROKER_SASL_ENABLED_MECHANISMS: PLAIN
+  KAFKA_SASL_ENABLED_MECHANISMS: PLAIN
+  KAFKA_SASL_MECHANISM_INTER_BROKER_PROTOCOL: PLAIN
+  KAFKA_ZOOKEEPER_SASL_CLIENT: "true"
+  KAFKA_OPTS: "-Djava.security.auth.login.config=/etc/kafka/secrets/kafka_server_jaas.conf"
+  KAFKA_SSL_ENDPOINT_IDENTIFICATION_ALGORITHM: https
+  KAFKA_AUTHORIZER_CLASS_NAME: kafka.security.authorizer.AclAuthorizer
+  KAFKA_SUPER_USERS: "User:controller_user;User:user;User:admin"
+  KAFKA_ALLOW_EVERYONE_IF_NO_ACL_FOUND: "false"
+
 services:
   zookeeper:
     ports:
@@ -9,7 +33,21 @@ services:
       - confluent
     image: confluentinc/cp-zookeeper:7.4.4
     environment:
+      ZOOKEEPER_SERVER_ID: 1
       ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_INIT_LIMIT: 5
+      ZOOKEEPER_SYNC_LIMIT: 2
+      ZOOKEEPER_SASL_ENABLED: "true"
+      ZOOKEEPER_AUTH_PROVIDER_1: "org.apache.zookeeper.server.auth.SASLAuthenticationProvider"
+      ZOOKEEPER_REQUIRE_CLIENT_AUTH_SCHEME: "sasl"
+      KAFKA_OPTS:
+        -Djava.security.auth.login.config=/etc/zookeeper/secrets/zookeeper.sasl.jaas.conf
+        -Dzookeeper.authProvider.1=org.apache.zookeeper.server.auth.SASLAuthenticationProvider
+        -Dzookeeper.allowSaslFailedClients=false
+        -Dzookeeper.requireClientAuthScheme=sasl
+    volumes:
+      - ./task_2/jaas:/etc/zookeeper/secrets
 
   kafka-1:
     image: confluentinc/cp-kafka:7.4.4
@@ -21,19 +59,8 @@ services:
     ports:
       - "9093:9093"
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:SSL
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_SSL_KEYSTORE_LOCATION: /etc/kafka/secrets/kafka.keystore.jks
-      KAFKA_SSL_KEYSTORE_PASSWORD: password
-      KAFKA_SSL_TRUSTSTORE_LOCATION: /etc/kafka/secrets/kafka.truststore.jks
-      KAFKA_SSL_TRUSTSTORE_PASSWORD: password
-      KAFKA_SSL_KEYSTORE_CREDENTIALS: credentials
-      KAFKA_SSL_KEY_PASSWORD: password
-      KAFKA_SSL_CLIENT_AUTH: required
-      KAFKA_SSL_KEY_CREDENTIALS: credentials
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,EXTERNAL://localhost:9093
+      <<: *x-common
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,EXTERNAL://:9093
     volumes:
       - ./task_2/kafka-1:/etc/kafka/secrets
 
@@ -47,19 +74,8 @@ services:
     ports:
       - "9094:9094"
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:SSL
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_SSL_KEYSTORE_LOCATION: /etc/kafka/secrets/kafka.keystore.jks
-      KAFKA_SSL_KEYSTORE_PASSWORD: password
-      KAFKA_SSL_TRUSTSTORE_LOCATION: /etc/kafka/secrets/kafka.truststore.jks
-      KAFKA_SSL_TRUSTSTORE_PASSWORD: password
-      KAFKA_SSL_KEYSTORE_CREDENTIALS: credentials
-      KAFKA_SSL_KEY_PASSWORD: password
-      KAFKA_SSL_CLIENT_AUTH: required
-      KAFKA_SSL_KEY_CREDENTIALS: credentials
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,EXTERNAL://localhost:9094
+      <<: *x-common
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,EXTERNAL://:9094
     volumes:
       - ./task_2/kafka-2:/etc/kafka/secrets
 
@@ -73,19 +89,8 @@ services:
     ports:
       - "9095:9095"
     environment:
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:SSL
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_SSL_KEYSTORE_LOCATION: /etc/kafka/secrets/kafka.keystore.jks
-      KAFKA_SSL_KEYSTORE_PASSWORD: password
-      KAFKA_SSL_TRUSTSTORE_LOCATION: /etc/kafka/secrets/kafka.truststore.jks
-      KAFKA_SSL_TRUSTSTORE_PASSWORD: password
-      KAFKA_SSL_KEYSTORE_CREDENTIALS: credentials
-      KAFKA_SSL_KEY_PASSWORD: password
-      KAFKA_SSL_CLIENT_AUTH: required
-      KAFKA_SSL_KEY_CREDENTIALS: credentials
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,EXTERNAL://localhost:9095
+      <<: *x-common
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,EXTERNAL://:9095
     volumes:
       - ./task_2/kafka-3:/etc/kafka/secrets
 
