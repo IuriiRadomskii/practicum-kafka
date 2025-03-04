@@ -5,7 +5,6 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.config.SaslConfigs;
-import org.apache.kafka.common.config.SecurityConfig;
 import org.apache.kafka.common.config.SslConfigs;
 import org.apache.kafka.common.config.TopicConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -24,7 +23,15 @@ import java.util.Properties;
 @Configuration
 public class AppConfig {
 
-    public static final String TOPIC = "trx_statuses";
+    public static final String TOPIC_1 = "topic-1";
+    public static final String TOPIC_2 = "topic-2";
+    private static final String JAAS_PRODUCER = """
+            KafkaClient
+             org.apache.kafka.common.security.plain.PlainLoginModule required
+             username="producer"
+             password="producer-secret";
+            };
+            """;
 
     @Value("${leader.host}")
     private String leaderHost;
@@ -46,7 +53,6 @@ public class AppConfig {
         props.put(TopicConfig.MIN_IN_SYNC_REPLICAS_CONFIG, "2");
         props.put(ProducerConfig.RETRIES_CONFIG, 10); // попытается еще два 10 раз если реплики не аккнут прием сообщения (ack all, sync replicas 2)
         props.put(ProducerConfig.RETRY_BACKOFF_MS_CONFIG, 500); //чтобы не спамить кафку ставим тайм-аут
-        props.put(ProducerConfig.RETRY_BACKOFF_MAX_MS_CONFIG, 5000); //если кафка отвалилась, то время тайм-аута вырастает до этого значения
         props.put(ProducerConfig.BATCH_SIZE_CONFIG, 16384);
         props.put(ProducerConfig.LINGER_MS_CONFIG, 1);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
@@ -56,7 +62,6 @@ public class AppConfig {
 
     private Map<Object, Object> getSaslSslProperties() {
         Map<Object, Object> props = new HashMap<>();
-        props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_SSL");
         props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, trustStoreLocation); // Путь к truststore
         props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, trustStorePassword); // Пароль truststore
         props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, keyStoreLocation); // Путь к keystore
@@ -64,19 +69,10 @@ public class AppConfig {
         props.put(SslConfigs.SSL_KEY_PASSWORD_CONFIG, sslKeyPassword);
 
         props.put(SaslConfigs.SASL_MECHANISM, "PLAIN");
-        props.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"producer\" password=\"producer-secret\";");
+        props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_SSL");
+        props.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username=producer password=producer-secret;");
 
         return props;
-    }
-
-
-    //@Bean
-    public KafkaProducer<String, TransactionStatus> producer() {
-        var props = getCommonProducerConfig();
-        props.putAll(getSaslSslProperties());
-        var producer = new KafkaProducer<String, TransactionStatus>(props);
-        Runtime.getRuntime().addShutdownHook(new Thread(producer::close));
-        return producer;
     }
 
     @Bean

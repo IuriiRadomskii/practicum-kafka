@@ -12,7 +12,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Properties;
 
-import static practicum.kafka.sprint.five.config.AppConfig.TOPIC;
+import static practicum.kafka.sprint.five.config.AppConfig.TOPIC_1;
 
 @Slf4j
 @Component
@@ -29,7 +29,7 @@ public class Consumer {
 
     public void consume() {
         try (KafkaConsumer<String, TransactionStatus> consumer = new KafkaConsumer<>(props)) {
-            consumer.subscribe(List.of(TOPIC));
+            consumer.subscribe(List.of(TOPIC_1));
             log.info("Starting consumer...");
             while (true) {
                 var records = consumer.poll(Duration.ofMillis(1000));
