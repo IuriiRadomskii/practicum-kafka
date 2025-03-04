@@ -5,6 +5,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.config.SaslConfigs;
+import org.apache.kafka.common.config.SecurityConfig;
 import org.apache.kafka.common.config.SslConfigs;
 import org.apache.kafka.common.config.TopicConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -53,33 +54,26 @@ public class AppConfig {
         return props;
     }
 
-    private Map<Object, Object> getSslProperties() {
+    private Map<Object, Object> getSaslSslProperties() {
         Map<Object, Object> props = new HashMap<>();
-        props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SSL");
+        props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_SSL");
         props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, trustStoreLocation); // Путь к truststore
         props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, trustStorePassword); // Пароль truststore
         props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, keyStoreLocation); // Путь к keystore
         props.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, keyStorePassword); // Пароль keystore
         props.put(SslConfigs.SSL_KEY_PASSWORD_CONFIG, sslKeyPassword);
-        return props;
-    }
 
-    private Map<Object, Object> getSaslProperties() {
-        Map<Object, Object> props = new HashMap<>();
-        props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_PLAINTEXT");
         props.put(SaslConfigs.SASL_MECHANISM, "PLAIN");
+        props.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"producer\" password=\"producer-secret\";");
 
-        // Если не используете файл JAAS, можно задать через код:
-        props.put(SaslConfigs.SASL_JAAS_CONFIG,
-                "org.apache.kafka.common.security.plain.PlainLoginModule required " +
-                        "username=\"admin\" password=\"admin-secret\";");
         return props;
     }
+
 
     //@Bean
     public KafkaProducer<String, TransactionStatus> producer() {
         var props = getCommonProducerConfig();
-        props.putAll(getSslProperties());
+        props.putAll(getSaslSslProperties());
         var producer = new KafkaProducer<String, TransactionStatus>(props);
         Runtime.getRuntime().addShutdownHook(new Thread(producer::close));
         return producer;
@@ -88,7 +82,7 @@ public class AppConfig {
     @Bean
     public KafkaProducer<String, TransactionStatus> producerSasl() {
         var props = getCommonProducerConfig();
-        props.putAll(getSaslProperties());
+        props.putAll(getSaslSslProperties());
         var producer = new KafkaProducer<String, TransactionStatus>(props);
         Runtime.getRuntime().addShutdownHook(new Thread(producer::close));
         return producer;
@@ -103,7 +97,7 @@ public class AppConfig {
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class.getName());
-        props.putAll(getSslProperties());
+        props.putAll(getSaslSslProperties());
         return props;
     }
 

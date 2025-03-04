@@ -51,22 +51,23 @@ docker start kafka-2
 docker compose -p sprint_5_task_2 -f ./infra/docker-compose-task-2.yaml up -d
 ```
 
-### Smoke-test: kafka-ui can collect metadata about cluster
-
 ### Create kafka topics: topic-1, topic-2
 ```bash
-docker exec -it kafka-0 /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic topic-1 --bootstrap-server kafka-0:9091 --partitions 3 --replication-factor 3
-docker exec -it kafka-0 /opt/bitnami/kafka/bin/kafka-topics.sh --create --topic topic-2 --bootstrap-server kafka-0:9091 --partitions 3 --replication-factor 3
+docker exec -it kafka-1 /usr/bin/kafka-topics --create --topic topic-1 --bootstrap-server localhost:9093 --command-config /etc/kafka/secrets/utility.properties --partitions 1 --replication-factor 3 
+docker exec -it kafka-1 /usr/bin/kafka-topics --create --topic topic-2 --bootstrap-server localhost:9093 --command-config /etc/kafka/secrets/utility.properties --partitions 1 --replication-factor 3 
 ```
 
 ### Add entries to ACL
 ```bash
-docker exec -it kafka-0 /opt/bitnami/kafka/bin/kafka-acls.sh --bootstrap-server=kafka-0:9091 --add --allow-principal User:PRODUCER --operation Write --topic topic-1
+docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --add --allow-principal User:producer --operation Write --topic topic-1
+docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --add --allow-principal User:producer --operation Describe --topic topic-1
+docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --add --allow-principal User:consumer --operation Read --topic topic-1
+docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --add --allow-principal User:consumer --operation Describe --topic topic-1
+docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --add --allow-principal User:producer --operation Write --topic topic-2
+docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --add --allow-principal User:producer --operation Describe --topic topic-2
 ```
-docker exec -it kafka-0 /opt/bitnami/kafka/bin/kafka-acls.sh --bootstrap-server=kafka-0:9091 --add --allow-principal User:PRODUCER --operation Describe --topic topic-1
-docker exec -it kafka-0 /opt/bitnami/kafka/bin/kafka-acls.sh --bootstrap-server=kafka-0:9091 --add --allow-principal User:CONSUMER --operation Read --topic topic-1
-docker exec -it kafka-0 /opt/bitnami/kafka/bin/kafka-acls.sh --bootstrap-server=kafka-0:9091 --add --allow-principal User:CONSUMER --operation Describe --topic topic-1
 
-docker exec -it kafka-0 /opt/bitnami/kafka/bin/kafka-acls.sh --bootstrap-server=kafka-0:9091 --add --allow-principal User:PRODUCER --operation Write --topic topic-2
-docker exec -it kafka-0 /opt/bitnami/kafka/bin/kafka-acls.sh --bootstrap-server=kafka-0:9091 --add --allow-principal User:PRODUCER --operation Describe --topic topic-2
-
+### List ACL
+```bash
+docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --list
+```
