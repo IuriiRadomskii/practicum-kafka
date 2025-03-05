@@ -31,7 +31,7 @@ public class Consumer {
     public void consume() {
         try (KafkaConsumer<String, TransactionStatus> consumer = new KafkaConsumer<>(props)) {
             log.info("Starting consumer...");
-            consumer.subscribe(List.of(TOPIC_1, TOPIC_2));
+            consumer.subscribe(List.of(TOPIC_1));
             while (true) {
                 log.info("Polling ...");
                 var records = consumer.poll(Duration.ofMillis(4000));
