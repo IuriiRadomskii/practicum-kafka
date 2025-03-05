@@ -62,14 +62,14 @@ public class AppConfig {
 
     private Map<Object, Object> getSaslSslProperties() {
         Map<Object, Object> props = new HashMap<>();
-        props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, trustStoreLocation); // Путь к truststore
+        /*props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, trustStoreLocation); // Путь к truststore
         props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, trustStorePassword); // Пароль truststore
         props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, keyStoreLocation); // Путь к keystore
         props.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, keyStorePassword); // Пароль keystore
-        props.put(SslConfigs.SSL_KEY_PASSWORD_CONFIG, sslKeyPassword);
+        props.put(SslConfigs.SSL_KEY_PASSWORD_CONFIG, sslKeyPassword);*/
 
         props.put(SaslConfigs.SASL_MECHANISM, "PLAIN");
-        props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_SSL");
+        props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, "SASL_PLAINTEXT");
         props.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username=producer password=producer-secret;");
 
         return props;
@@ -94,6 +94,9 @@ public class AppConfig {
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class.getName());
         props.putAll(getSaslSslProperties());
+        props.remove(SaslConfigs.SASL_JAAS_CONFIG);
+        props.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username=consumer password=consumer-secret;");
+
         return props;
     }
 

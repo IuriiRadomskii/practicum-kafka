@@ -44,7 +44,7 @@ public class Consumer {
                         consumer.commitSync();
                     }
                 } catch (MessageNotHandledException e) {
-                    log.error(e.getMessage());
+                    log.error("Unable to consume message: {}", e.getMessage(), e);
                 }
             }
         }

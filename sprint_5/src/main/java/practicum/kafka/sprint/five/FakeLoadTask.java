@@ -54,8 +54,9 @@ public class FakeLoadTask implements CommandLineRunner {
                 emulateLoad();
                 transactionStatusProducer.send(TOPIC_1, getRandomTransactionStatus());
             }
-            System.exit(1);
+            //System.exit(1);
         });
+        executorService.submit(consumer::consume);
     }
 
 }

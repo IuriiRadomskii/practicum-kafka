@@ -57,17 +57,22 @@ docker exec -it kafka-1 /usr/bin/kafka-topics --create --topic topic-1 --bootstr
 docker exec -it kafka-1 /usr/bin/kafka-topics --create --topic topic-2 --bootstrap-server localhost:9093 --command-config /etc/kafka/secrets/utility.properties --partitions 1 --replication-factor 3 
 ```
 
-### Add entries to ACL
+### Add entries to ACL1
 ```bash
 docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --add --allow-principal User:producer --operation Write --topic topic-1
 docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --add --allow-principal User:producer --operation Describe --topic topic-1
+docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --add --allow-principal User:producer --operation DescribeConfigs --topic topic-1
+
 docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --add --allow-principal User:consumer --operation Read --topic topic-1
 docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --add --allow-principal User:consumer --operation Describe --topic topic-1
+docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --add --allow-principal User:consumer --group consumer
+```
+
+### Add entries to ACL2
+```bash
 docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --add --allow-principal User:producer --operation Write --topic topic-2
 docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --add --allow-principal User:producer --operation Describe --topic topic-2
-```
-```bash
-docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --add --allow-principal User:producer --operation DescribeConfigs --topic topic-1
+docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --add --allow-principal User:producer --operation DescribeConfigs --topic topic-2
 ```
 
 ### List ACL
@@ -76,5 +81,5 @@ docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --
 ```
 
 ```bash
-docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --list
+docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --add --allow-principal User:consumer --group consumer
 ```
