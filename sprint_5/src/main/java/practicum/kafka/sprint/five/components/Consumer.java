@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Properties;
 
 import static practicum.kafka.sprint.five.config.AppConfig.TOPIC_1;
+import static practicum.kafka.sprint.five.config.AppConfig.TOPIC_2;
 
 @Slf4j
 @Component
@@ -29,11 +30,12 @@ public class Consumer {
 
     public void consume() {
         try (KafkaConsumer<String, TransactionStatus> consumer = new KafkaConsumer<>(props)) {
-            consumer.subscribe(List.of(TOPIC_1));
             log.info("Starting consumer...");
+            consumer.subscribe(List.of(TOPIC_1, TOPIC_2));
             while (true) {
-                var records = consumer.poll(Duration.ofMillis(1000));
                 log.info("Polling ...");
+                var records = consumer.poll(Duration.ofMillis(4000));
+                log.info("Polled records: {}", records);
                 try {
                     if (!records.isEmpty()) {
                         log.info("Got {} records for {}, partitions: {}",

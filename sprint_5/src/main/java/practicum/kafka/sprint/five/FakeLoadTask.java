@@ -16,6 +16,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static practicum.kafka.sprint.five.config.AppConfig.TOPIC_1;
+import static practicum.kafka.sprint.five.config.AppConfig.TOPIC_2;
 
 @Slf4j
 @Component
@@ -53,6 +54,7 @@ public class FakeLoadTask implements CommandLineRunner {
             for (int i = 0; i < finalNumberOfMessages; i++) {
                 emulateLoad();
                 transactionStatusProducer.send(TOPIC_1, getRandomTransactionStatus());
+                transactionStatusProducer.send(TOPIC_2, getRandomTransactionStatus());
             }
             //System.exit(1);
         });
