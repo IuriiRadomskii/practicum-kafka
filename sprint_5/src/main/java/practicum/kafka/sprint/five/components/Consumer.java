@@ -28,10 +28,10 @@ public class Consumer {
         this.messageHandler = messageHandler;
     }
 
-    public void consume() {
+    public void consume(String topicName) {
         try (KafkaConsumer<String, TransactionStatus> consumer = new KafkaConsumer<>(props)) {
             log.info("Starting consumer...");
-            consumer.subscribe(List.of(TOPIC_1));
+            consumer.subscribe(List.of(topicName));
             while (true) {
                 log.info("Polling ...");
                 var records = consumer.poll(Duration.ofMillis(4000));

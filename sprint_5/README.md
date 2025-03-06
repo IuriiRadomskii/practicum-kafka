@@ -40,11 +40,11 @@ docker stop kafka-2
 docker start kafka-2
 ```
 
-# TASK_2: SSL/TLS
+# TASK_2: SSL/TLS and ACL
 #### Delete task_1 related containers and volumes
-#### All commands are executed on local Ubuntu wsl subsystem. openssl utility and jre21 are required
 #### see file ./infra/task_2/make_certs.sh
-#### Copy generated dirs to ./infra/task_2 directory
+#### make_certs.sh should be executed on local Ubuntu wsl subsystem. openssl utility and jre21 are required
+#### Generated dirs should be copied to ./infra/task_2 directory
 
 ### Up kafka cluster
 ```bash
@@ -76,10 +76,9 @@ docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --
 docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --add --allow-principal User:producer --operation DescribeConfigs --topic topic-2
 ```
 
-### List ACL
+### Wait a little and execute command to show list of privileges 
 ```bash
 docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --command-config /etc/kafka/secrets/utility.properties --list
 ```
 
-```bash
-```
+### Cluster operates nice and fine. It means that SASL_PLAIN authentication mechanism works inside cluster
