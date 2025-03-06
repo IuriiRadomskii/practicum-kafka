@@ -46,6 +46,8 @@ docker start kafka-2
 #### make_certs.sh should be executed on local Ubuntu wsl subsystem. openssl utility and jre21 are required
 #### Generated dirs should be copied to ./infra/task_2 directory
 
+### Add kafka-1, kafka-2, kafka-3 domain names to hosts file as 127.0.0.1
+
 ### Up kafka cluster
 ```bash
 docker compose -p sprint_5_task_2 -f ./infra/docker-compose-task-2.yaml up -d
@@ -82,3 +84,8 @@ docker exec -it kafka-1 /usr/bin/kafka-acls --bootstrap-server=localhost:9093 --
 ```
 
 ### Cluster operates nice and fine. It means that SASL_PLAIN authentication mechanism works inside cluster
+
+### Test run
+#### Before run set project.root.dir property in application.properties
+#### Run with property test.topic=1: message sent to topic and red from it
+#### Run with property test.topic=2: message sent to topic and consumer got authorization exception

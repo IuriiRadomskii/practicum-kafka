@@ -15,9 +15,6 @@ import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static practicum.kafka.sprint.five.config.AppConfig.TOPIC_1;
-import static practicum.kafka.sprint.five.config.AppConfig.TOPIC_2;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -32,6 +29,8 @@ public class FakeLoadTask implements CommandLineRunner {
 
     @Value("${number.of.messages}")
     private Integer numberOfMessages;
+    @Value("${test.topic}")
+    private String testTopic;
 
     private static TransactionStatus getRandomTransactionStatus() {
         return new TransactionStatus(UUID.randomUUID(), STATUSES.get(RANDOM.nextInt(STATUSES.size())));
@@ -53,10 +52,9 @@ public class FakeLoadTask implements CommandLineRunner {
         executorService.submit(() -> {
             for (int i = 0; i < finalNumberOfMessages; i++) {
                 emulateLoad();
-                transactionStatusProducer.send(TOPIC_1, getRandomTransactionStatus());
-                transactionStatusProducer.send(TOPIC_2, getRandomTransactionStatus());
+                transactionStatusProducer.send(testTopic, getRandomTransactionStatus());
             }
-            executorService.submit(() -> consumer.consume(TOPIC_1));
+            executorService.submit(() -> consumer.consume(testTopic));
         });
     }
 

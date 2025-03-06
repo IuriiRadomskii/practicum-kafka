@@ -23,9 +23,6 @@ import java.util.Properties;
 @Configuration
 public class AppConfig {
 
-    public static final String TOPIC_1 = "topic-1";
-    public static final String TOPIC_2 = "topic-2";
-
     @Value("${leader.host}")
     private String leaderHost;
     @Value("${trust.store.location}")
@@ -85,6 +82,8 @@ public class AppConfig {
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class.getName());
+        props.put(ConsumerConfig.REQUEST_TIMEOUT_MS_CONFIG, "5000");
+        props.put(ConsumerConfig.RETRY_BACKOFF_MS_CONFIG, "1000");
         props.putAll(getSaslSslProperties());
         props.put(SaslConfigs.SASL_JAAS_CONFIG, "org.apache.kafka.common.security.plain.PlainLoginModule required username=consumer password=consumer-secret;");
 

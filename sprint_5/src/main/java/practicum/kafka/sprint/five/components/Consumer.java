@@ -12,9 +12,6 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Properties;
 
-import static practicum.kafka.sprint.five.config.AppConfig.TOPIC_1;
-import static practicum.kafka.sprint.five.config.AppConfig.TOPIC_2;
-
 @Slf4j
 @Component
 public class Consumer {
