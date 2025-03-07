@@ -1,0 +1,43 @@
+version: '2'
+services:
+  zookeeper:
+    ports:
+      - 22181:2181
+    container_name: zookeeper
+    networks:
+      - confluent
+    image: confluentinc/cp-zookeeper:7.4.4
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+
+  kafka-1:
+    image: confluentinc/cp-kafka:7.4.4
+    container_name: kafka-1
+    networks:
+      - confluent
+    ports:
+      - 9092:9092
+      - 9093:9093
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,SSL:SSL
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,SSL://localhost:9093
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_SSL_KEYSTORE_FILENAME: kafka.keystore.jks
+      KAFKA_SSL_KEYSTORE_PASSWORD: password
+      KAFKA_SSL_TRUSTSTORE_FILENAME: kafka.truststore.jks
+      KAFKA_SSL_TRUSTSTORE_CREDENTIALS: credentials
+      KAFKA_SSL_KEYSTORE_CREDENTIALS: credentials
+      KAFKA_SSL_KEY_PASSWORD: password
+      KAFKA_SSL_CLIENT_AUTH: required
+      KAFKA_SSL_KEY_CREDENTIALS: credentials
+    volumes:
+      - ./task_2/kafka-1:/etc/kafka/secrets
+
+networks:
+  confluent:
+    driver: bridge
