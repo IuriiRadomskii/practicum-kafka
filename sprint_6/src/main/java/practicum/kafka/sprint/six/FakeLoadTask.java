@@ -6,12 +6,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import practicum.kafka.sprint.six.components.Consumer;
-import practicum.kafka.sprint.six.components.TransactionStatusProducer;
-import practicum.kafka.sprint.six.dto.TransactionStatus;
+import practicum.kafka.sprint.six.components.UserProducer;
+import practicum.kafka.sprint.six.dto.User;
 
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -21,19 +20,23 @@ import java.util.concurrent.Executors;
 public class FakeLoadTask implements CommandLineRunner {
 
     private static final Random RANDOM = new Random();
-    private static final List<String> STATUSES = List.of("SUCCESS", "FAILURE", "PENDING");
+    private static final List<String> COLORS = List.of("YELLOW", "BLUE", "CYAN", "GREEN", "PINK", "ORANGE", "RED", "WHITE");
 
-    private final TransactionStatusProducer transactionStatusProducer;
+    private final UserProducer userProducer;
     private final Consumer consumer;
     private final ExecutorService executorService = Executors.newFixedThreadPool(3);
 
-    @Value("${number.of.messages}")
+    @Value("${number-of-messages}")
     private Integer numberOfMessages;
-    @Value("${test.topic}")
+    @Value("${task-1.topic}")
     private String testTopic;
 
-    private static TransactionStatus getRandomTransactionStatus() {
-        return new TransactionStatus(UUID.randomUUID(), STATUSES.get(RANDOM.nextInt(STATUSES.size())));
+    private static User getRandomUser() {
+        return new User(
+                String.valueOf(RANDOM.nextLong(1000)),
+                RANDOM.nextInt(1000),
+                COLORS.get(RANDOM.nextInt(0, COLORS.size() - 1))
+        );
     }
 
     private static void emulateLoad() {
@@ -52,7 +55,7 @@ public class FakeLoadTask implements CommandLineRunner {
         executorService.submit(() -> {
             for (int i = 0; i < finalNumberOfMessages; i++) {
                 emulateLoad();
-                transactionStatusProducer.send(testTopic, getRandomTransactionStatus());
+                userProducer.send(testTopic, getRandomUser());
             }
             executorService.submit(() -> consumer.consume(testTopic));
         });

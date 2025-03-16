@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.stereotype.Component;
-import practicum.kafka.sprint.six.dto.TransactionStatus;
+import practicum.kafka.sprint.six.dto.User;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,13 +14,13 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class TransactionStatusProducer {
+public class UserProducer {
 
-    private final KafkaProducer<String, TransactionStatus> producer;
+    private final KafkaProducer<String, User> producer;
     private final ExecutorService executorService = Executors.newCachedThreadPool();
 
-    public void send(String topic, TransactionStatus message) {
-        ProducerRecord<String, TransactionStatus> record = new ProducerRecord<>(topic, message);
+    public void send(String topic, User message) {
+        ProducerRecord<String, User> record = new ProducerRecord<>(topic, message);
         executorService.submit(() -> {
             var future = producer.send(record);
             try {
