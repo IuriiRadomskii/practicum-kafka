@@ -5,7 +5,7 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import practicum.kafka.sprint.six.dto.User;
+import practicum.kafka.sprint.six.dto.TransactionStatus;
 import practicum.kafka.sprint.six.exceptions.MessageNotHandledException;
 
 import java.time.Duration;
@@ -26,7 +26,7 @@ public class Consumer {
     }
 
     public void consume(String topicName) {
-        try (KafkaConsumer<String, User> consumer = new KafkaConsumer<>(props)) {
+        try (KafkaConsumer<String, TransactionStatus> consumer = new KafkaConsumer<>(props)) {
             log.info("Starting consumer...");
             consumer.subscribe(List.of(topicName));
             while (true) {

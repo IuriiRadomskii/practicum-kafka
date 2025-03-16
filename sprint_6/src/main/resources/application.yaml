@@ -1,0 +1,14 @@
+number-of-messages: 5
+leader:
+  host: rc1a-qamfgm7vrpt2t3hr.mdb.yandexcloud.net:9091
+schema-registry:
+  url: http://localhost:8081
+jaas-template: "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"%s\" password=\"%s\";"
+task-1:
+  topic: cluster-topic
+  user: admin-kafka
+  password: admin-kafka
+  cacerts:
+    location: "C:\jdk\java17\lib\security\cacerts"
+    password: changeit
+

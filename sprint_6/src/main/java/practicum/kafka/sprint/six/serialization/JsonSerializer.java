@@ -5,15 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.errors.SerializationException;
 import org.apache.kafka.common.serialization.Serializer;
-import practicum.kafka.sprint.six.dto.User;
+import practicum.kafka.sprint.six.dto.TransactionStatus;
 
 @Slf4j
-public class JsonSerializer implements Serializer<User> {
+public class JsonSerializer implements Serializer<TransactionStatus> {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public byte[] serialize(String topic, User data) {
+    public byte[] serialize(String topic, TransactionStatus data) {
         try {
             return mapper.writeValueAsBytes(data);
         } catch (JsonProcessingException e) {

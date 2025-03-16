@@ -3,16 +3,20 @@ package practicum.kafka.sprint.six.components;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.springframework.stereotype.Component;
-import practicum.kafka.sprint.six.dto.User;
+import practicum.kafka.sprint.six.dto.TransactionStatus;
 import practicum.kafka.sprint.six.exceptions.MessageNotHandledException;
 
 @Slf4j
 @Component
 public class MessageHandler {
 
-    public void handle(ConsumerRecords<String, User> records) throws MessageNotHandledException {
+    public void handle(ConsumerRecords<String, TransactionStatus> records) throws MessageNotHandledException {
         records.forEach(r -> {
-            log.info("Topic: {}, Header: {}, Value: {}", r.topic(), r.headers(), r.value());
+            log.info("TOPIC: {}, ID: {}, STATUS: {}",
+                    r.topic(),
+                    r.value().transactionId(),
+                    r.value().status()
+            );
         });
 
     }

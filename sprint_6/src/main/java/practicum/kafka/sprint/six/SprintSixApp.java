@@ -6,10 +6,10 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
-public class SchemaRegistryApp {
+public class SprintSixApp {
 
     public static void main(String[] args) {
-        SpringApplication.run(SchemaRegistryApp.class, args);
+        SpringApplication.run(SprintSixApp.class, args);
     }
 
 }

@@ -3,5 +3,8 @@
 /sprint_3/target
 /sprint_4/target
 /sprint_5/target
+/sprint_6/target
 /sprint_5/infra/task_2/data*
 /sprint_3/tmp
+/sprint_6/infra/.ssh
+/sprint_6/infra/.kafka
