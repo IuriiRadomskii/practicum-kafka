@@ -49,7 +49,8 @@ public class FakeLoadTask implements CommandLineRunner {
     public void run(String... args) throws RestClientException, IOException {
 
         var subject = schemaRegistryClient.getAllSubjects();
-        log.info("Subjects: {}", subject);
+        var versions = schemaRegistryClient.getAllVersions("cluster-topic");
+        log.info("Subjects: {}, versions: {}", subject, versions);
         if (subject.isEmpty()) {
             String schema = schemaRegistryService.loadSchema("user_schema.json");
             schemaRegistryService.registerSchema(testTopic, schema);
