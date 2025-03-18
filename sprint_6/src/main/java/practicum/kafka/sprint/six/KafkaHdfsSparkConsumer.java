@@ -1,3 +1,4 @@
+/*
 package practicum.kafka.sprint.six;
 
 import org.apache.hadoop.conf.Configuration;
@@ -76,4 +77,4 @@ public class KafkaHdfsSparkConsumer {
 
         }
     }
-}
+}*/

@@ -2,8 +2,10 @@ package practicum.kafka.sprint.six.components;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.producer.Callback;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 import org.springframework.stereotype.Component;
 import practicum.kafka.sprint.six.dto.User;
 
@@ -20,8 +22,9 @@ public class UserProducer {
     private final ExecutorService executorService = Executors.newCachedThreadPool();
 
     public void send(String topic, User message) {
-        ProducerRecord<String, User> record = new ProducerRecord<>(topic, message);
+        ProducerRecord<String, User> record = new ProducerRecord<>(topic, message.name(), message);
         executorService.submit(() -> {
+            log.info("Sending message: {}", message);
             var future = producer.send(record);
             try {
                 var metadata = future.get(5, TimeUnit.SECONDS);
