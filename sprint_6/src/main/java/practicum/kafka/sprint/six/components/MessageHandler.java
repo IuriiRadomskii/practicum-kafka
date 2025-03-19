@@ -11,13 +11,7 @@ import practicum.kafka.sprint.six.exceptions.MessageNotHandledException;
 public class MessageHandler {
 
     public void handle(ConsumerRecords<String, User> records) throws MessageNotHandledException {
-        records.forEach(r -> {
-            log.info("TOPIC: {}, USER: {}",
-                    r.topic(),
-                    r.value().toString()
-            );
-        });
-
+        records.forEach(r -> log.info("TOPIC: {}, USER: {}", r.topic(), r.value().toString()));
     }
 
 }

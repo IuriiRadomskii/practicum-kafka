@@ -36,6 +36,12 @@ public class FakeLoadTask implements CommandLineRunner {
     private Integer numberOfMessages;
     @Value("${task-1.topic}")
     private String testTopic;
+    @Value("${run-task}")
+    private int taskNumber;
+    @Value("${task-2.topic-sink}")
+    private String sinkTopic;
+    @Value("${task-2.topic-source}")
+    private String sourceTopic;
 
     private static User getRandomUser() {
         return new User(
@@ -47,7 +53,14 @@ public class FakeLoadTask implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws RestClientException, IOException {
+        if (numberOfMessages < 2) {
+            runTask1();
+        } else {
+            runTask2();
+        }
+    }
 
+    private void runTask1() throws RestClientException, IOException {
         var subject = schemaRegistryClient.getAllSubjects();
         var versions = schemaRegistryClient.getAllVersions("cluster-topic");
         log.info("Subjects: {}, versions: {}", subject, versions);
@@ -63,6 +76,26 @@ public class FakeLoadTask implements CommandLineRunner {
             }
             executorService.submit(() -> consumer.consume(testTopic));
         });
+    }
+
+    private void runTask2() {
+        final int finalNumberOfMessages = numberOfMessages;
+        executorService.submit(() -> {
+            for (int i = 0; i < finalNumberOfMessages; i++) {
+                emulateLoad();
+                userProducer.send(sourceTopic, getRandomUser());
+            }
+        });
+        executorService.submit(() -> consumer.consume(sinkTopic));
+    }
+
+    private static void emulateLoad() {
+        try {
+            Thread.sleep(RANDOM.nextLong(500, 1000));
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            log.info("Load too high exception");
+        }
     }
 
 }

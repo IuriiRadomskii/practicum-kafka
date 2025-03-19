@@ -27,17 +27,17 @@ public class AppConfig {
 
     @Value("${leader.host}")
     private String leaderHost;
-    @Value("${task-1.cacerts.location}")
+    @Value("${cacerts.location}")
     private String cacertsLocation;
-    @Value("${task-1.cacerts.password}")
+    @Value("${cacerts.password}")
     private String cacertsPassword;
-    @Value("${task-1.producer.user}")
+    @Value("${producer.user}")
     private String producerUser;
-    @Value("${task-1.producer.password}")
+    @Value("${producer.password}")
     private String producerPassword;
-    @Value("${task-1.consumer.user}")
+    @Value("${consumer.user}")
     private String consumerUser;
-    @Value("${task-1.consumer.password}")
+    @Value("${consumer.password}")
     private String consumerPassword;
     @Value("${jaas-template}")
     private String jaasTemplate;
