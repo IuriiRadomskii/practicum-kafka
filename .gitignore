@@ -8,5 +8,4 @@
 /sprint_3/tmp
 /sprint_6/infra/.ssh
 /sprint_6/infra/.kafka
-*.jks
-*.crt
+/sprint_6/infra/nifi
