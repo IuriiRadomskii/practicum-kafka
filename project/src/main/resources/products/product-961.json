@@ -1,0 +1,37 @@
+{
+  "product_id": "62f4b505-ac10-422c-b1a9-f354f40a1a03",
+  "name": "Smartswitch Fuguzzy0",
+  "description": "Smartswitch Fuguzzy0 description",
+  "price": {
+    "amount": "3395",
+    "currency": "RUB"
+  },
+  "category": "IoT devices",
+  "brand": "Fuguzzy0",
+  "stock": {
+    "available": "174",
+    "reserved": "51"
+  },
+  "sku": "Fuguzzy0-12345",
+  "tags": ["IoT devices"],
+  "images": [
+    {
+      "url": "https://example.com/images/front_view.jpg",
+      "alt": "Front-view"
+    },
+    {
+      "url": "https://example.com/images/side_view.jpg",
+      "alt": "Side-view"
+    }
+  ],
+  "specifications": {
+    "weight": "50g",
+    "dimensions": "42mm x 36mm x 10mm",
+    "battery_life": "24 hours",
+    "water_resistance": "IP68"
+  },
+  "created_at": "2023-10-01T12:00:00Z",
+  "updated_at": "2023-10-10T15:30:00Z",
+  "index": "index",
+  "store_id": "abracadabra"
+}

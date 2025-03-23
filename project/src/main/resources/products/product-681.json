@@ -1,0 +1,37 @@
+{
+  "product_id": "e3b94715-f7c2-4026-b449-59a9e4fb146c",
+  "name": "Washing machine Fuguzzy8",
+  "description": "Washing machine Fuguzzy8 description",
+  "price": {
+    "amount": "5547",
+    "currency": "RUB"
+  },
+  "category": "Household appliances",
+  "brand": "Fuguzzy8",
+  "stock": {
+    "available": "120",
+    "reserved": "76"
+  },
+  "sku": "Fuguzzy8-12345",
+  "tags": ["Household appliances"],
+  "images": [
+    {
+      "url": "https://example.com/images/front_view.jpg",
+      "alt": "Front-view"
+    },
+    {
+      "url": "https://example.com/images/side_view.jpg",
+      "alt": "Side-view"
+    }
+  ],
+  "specifications": {
+    "weight": "50g",
+    "dimensions": "42mm x 36mm x 10mm",
+    "battery_life": "24 hours",
+    "water_resistance": "IP68"
+  },
+  "created_at": "2023-10-01T12:00:00Z",
+  "updated_at": "2023-10-10T15:30:00Z",
+  "index": "index",
+  "store_id": "abracadabra"
+}

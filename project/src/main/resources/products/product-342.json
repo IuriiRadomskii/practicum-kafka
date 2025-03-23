@@ -1,0 +1,37 @@
+{
+  "product_id": "b0c8e9ac-7e50-461f-8ea1-ae75f2f6b74e",
+  "name": "Pen Thrilled Company5",
+  "description": "Pen Thrilled Company5 description",
+  "price": {
+    "amount": "8727",
+    "currency": "RUB"
+  },
+  "category": "Office supplies",
+  "brand": "Thrilled Company5",
+  "stock": {
+    "available": "146",
+    "reserved": "45"
+  },
+  "sku": "Thrilled Company5-12345",
+  "tags": ["Office supplies"],
+  "images": [
+    {
+      "url": "https://example.com/images/front_view.jpg",
+      "alt": "Front-view"
+    },
+    {
+      "url": "https://example.com/images/side_view.jpg",
+      "alt": "Side-view"
+    }
+  ],
+  "specifications": {
+    "weight": "50g",
+    "dimensions": "42mm x 36mm x 10mm",
+    "battery_life": "24 hours",
+    "water_resistance": "IP68"
+  },
+  "created_at": "2023-10-01T12:00:00Z",
+  "updated_at": "2023-10-10T15:30:00Z",
+  "index": "index",
+  "store_id": "abracadabra"
+}

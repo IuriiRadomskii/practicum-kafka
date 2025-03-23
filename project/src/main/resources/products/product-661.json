@@ -1,0 +1,37 @@
+{
+  "product_id": "4fe6cfe6-43a4-4ba5-84f1-d48e2004c85c",
+  "name": "Cheese Fuguzzy4",
+  "description": "Cheese Fuguzzy4 description",
+  "price": {
+    "amount": "2946",
+    "currency": "RUB"
+  },
+  "category": "Foods",
+  "brand": "Fuguzzy4",
+  "stock": {
+    "available": "138",
+    "reserved": "56"
+  },
+  "sku": "Fuguzzy4-12345",
+  "tags": ["Foods"],
+  "images": [
+    {
+      "url": "https://example.com/images/front_view.jpg",
+      "alt": "Front-view"
+    },
+    {
+      "url": "https://example.com/images/side_view.jpg",
+      "alt": "Side-view"
+    }
+  ],
+  "specifications": {
+    "weight": "50g",
+    "dimensions": "42mm x 36mm x 10mm",
+    "battery_life": "24 hours",
+    "water_resistance": "IP68"
+  },
+  "created_at": "2023-10-01T12:00:00Z",
+  "updated_at": "2023-10-10T15:30:00Z",
+  "index": "index",
+  "store_id": "abracadabra"
+}

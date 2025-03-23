@@ -1,0 +1,37 @@
+{
+  "product_id": "33aa9cb8-a6aa-4670-afe2-b5eb4757b902",
+  "name": "Owen PIPI7",
+  "description": "Owen PIPI7 description",
+  "price": {
+    "amount": "1580",
+    "currency": "RUB"
+  },
+  "category": "Household appliances",
+  "brand": "PIPI7",
+  "stock": {
+    "available": "183",
+    "reserved": "4"
+  },
+  "sku": "PIPI7-12345",
+  "tags": ["Household appliances"],
+  "images": [
+    {
+      "url": "https://example.com/images/front_view.jpg",
+      "alt": "Front-view"
+    },
+    {
+      "url": "https://example.com/images/side_view.jpg",
+      "alt": "Side-view"
+    }
+  ],
+  "specifications": {
+    "weight": "50g",
+    "dimensions": "42mm x 36mm x 10mm",
+    "battery_life": "24 hours",
+    "water_resistance": "IP68"
+  },
+  "created_at": "2023-10-01T12:00:00Z",
+  "updated_at": "2023-10-10T15:30:00Z",
+  "index": "index",
+  "store_id": "abracadabra"
+}

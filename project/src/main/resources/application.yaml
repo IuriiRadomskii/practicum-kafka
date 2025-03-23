@@ -1,0 +1,48 @@
+cluster:
+  leader-host: localhost:9094
+  #leader-host: rc1a-gtaf31j62r39nl99.mdb.yandexcloud.net:9091
+  security:
+    enabled: false
+    jaas-template: "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"%s\" password=\"%s\";"
+    cacerts:
+      location: C:\\jdk\\java17\\lib\\security\\cacerts
+      password: "changeit"
+
+schema-registry:
+  url: https://rc1a-s89utbdt01tfp6hh.mdb.yandexcloud.net:443
+  user: "sr-user"
+  password: "sr-user-password"
+
+shop:
+  delay: 500
+  topic: "data-products-topic-raw"
+  user:
+    username: "shop-user"
+    password: "shop-user-password"
+
+client:
+  topic: "data-client-requests-topic"
+  user:
+    username: "client-user"
+    password: "client-user-password"
+
+hdfs:
+  disabled: false
+  url: "hdfs://localhost:9000"
+  file-path: "hdfs://localhost:9000/data/client_requests.txt"
+  topics: "data-client-requests-topic"
+  user:
+    username: "hdfs-user"
+    password: "hdfs-user-password"
+
+product-filter:
+  app-id: "product-filter-app"
+  filter-names-list: "Bread,Milk,Cheese,Eggs,Butter,Orange Juice,Cereal,Rice,Chicken,Beef"
+  filter-names-store: "filter-names-store"
+  topics:
+    filter-names-topic: "filter-names-topic"
+    source: "data-products-topic-raw"
+    sink: "data-products-topic"
+  user:
+    username: "filter-user"
+    password: "filter-user-password"

@@ -1,0 +1,37 @@
+{
+  "product_id": "39cf8019-3abc-4920-b11b-c4cda28c7ba4",
+  "name": "Blender Yandex0",
+  "description": "Blender Yandex0 description",
+  "price": {
+    "amount": "6634",
+    "currency": "RUB"
+  },
+  "category": "Household appliances",
+  "brand": "Yandex0",
+  "stock": {
+    "available": "152",
+    "reserved": "32"
+  },
+  "sku": "Yandex0-12345",
+  "tags": ["Household appliances"],
+  "images": [
+    {
+      "url": "https://example.com/images/front_view.jpg",
+      "alt": "Front-view"
+    },
+    {
+      "url": "https://example.com/images/side_view.jpg",
+      "alt": "Side-view"
+    }
+  ],
+  "specifications": {
+    "weight": "50g",
+    "dimensions": "42mm x 36mm x 10mm",
+    "battery_life": "24 hours",
+    "water_resistance": "IP68"
+  },
+  "created_at": "2023-10-01T12:00:00Z",
+  "updated_at": "2023-10-10T15:30:00Z",
+  "index": "index",
+  "store_id": "abracadabra"
+}
