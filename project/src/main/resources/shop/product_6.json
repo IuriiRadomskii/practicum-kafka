@@ -1,0 +1,33 @@
+{
+  "product_id": "6",
+  "name": "Тряпка из микрофибры CleanSweep",
+  "description": "Супер абсорбирующая тряпка из микрофибры, идеально подходит для уборки и восстановления блеска на всех поверхностях. Машинная стирка.",
+  "price": {
+    "amount": 299.99,
+    "currency": "RUB"
+  },
+  "category": "Товары для дома",
+  "brand": "CleanSweep",
+  "stock": {
+    "available": 500,
+    "reserved": 15
+  },
+  "sku": "CS-234567",
+  "tags": ["тряпка из микрофибры", "уборка", "дом"],
+  "images": [
+    {
+      "url": "https://example.com/images/product6.jpg",
+      "alt": "Тряпка из микрофибры CleanSweep"
+    }
+  ],
+  "specifications": {
+    "weight": "0.1kg",
+    "dimensions": "40cm x 40cm",
+    "material": "microfiber",
+    "color": "Blue"
+  },
+  "created_at": "2023-07-01T12:00:00Z",
+  "updated_at": "2023-07-01T15:30:00Z",
+  "index": "products",
+  "store_id": "store_001"
+}

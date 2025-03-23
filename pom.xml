@@ -21,6 +21,7 @@
         <module>sprint_3</module>
         <module>sprint_5</module>
         <module>sprint_6</module>
+        <module>project</module>
     </modules>
 
     <properties>

@@ -1,0 +1,39 @@
+{
+  "product_id":"4",
+  "name":"Набор ножей от CuttingEdge",
+  "description":"Набор из 5 профессиональных ножей: шеф-нож, нож для хлеба, универсальный нож, нож для овощей и острый нож. Изготовлены из нержавеющей стали с деревянными ручками.",
+  "price":{
+    "amount":10999.99,
+    "currency":"RUB"
+  },
+  "category":"Кухонные принадлежности",
+  "brand":"CuttingEdge",
+  "stock":{
+    "available":120,
+    "reserved":15
+  },
+  "sku":"CE-98765",
+  "tags":["набор ножей", "кухня", "приготовление пищи"],
+  "images":[
+    {
+      "url":"https://example.com/images/product4.jpg",
+      "alt":"Набор ножей CuttingEdge - вид сверху"
+    },
+    {
+      "url":"https://example.com/images/product4_side.jpg",
+      "alt":"Набор ножей CuttingEdge - вид сбоку"
+    }
+  ],
+  "specifications":{
+    "weight":"1.5kg",
+    "dimensions":"35cm x 25cm x 3cm",
+    "material":"stainless steel",
+    "handle material":"wood",
+    "number of pieces":"5",
+    "includes":"chef knife, bread knife, utility knife, vegetable knife, paring knife"
+  },
+  "created_at":"2023-06-05T12:00:00Z",
+  "updated_at":"2023-06-12T15:30:00Z",
+  "index":"products",
+  "store_id":"store_004"
+}

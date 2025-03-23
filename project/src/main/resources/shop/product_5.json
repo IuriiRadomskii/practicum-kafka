@@ -1,0 +1,37 @@
+{
+ "product_id":"5",
+ "name":"Фильтр для воды PureH20",
+ "description":"Высококачественный фильтр для воды с технологией обратного осмоса для обеспечения чистой и безопасной питьевой воды.",
+ "price":{
+    "amount":8999.99,
+    "currency":"RUB"
+ },
+ "category":"Устройства для дома",
+ "brand":"PureH20",
+ "stock":{
+    "available":200,
+    "reserved":25
+ },
+ "sku":"PH2O-56789",
+ "tags":["фильтр для воды", "вода", "технологии дома"],
+ "images":[
+    {
+      "url":"https://example.com/images/product5.jpg",
+      "alt":"Фильтр для воды PureH20 - вид спереди"
+    },
+    {
+      "url":"https://example.com/images/product5_side.jpg",
+      "alt":"Фильтр для воды PureH20 - вид сбоку"
+    }
+ ],
+ "specifications":{
+    "weight":"3.5kg",
+    "dimensions":"30cm x 45cm x 15cm",
+    "filtration method":"reverse osmosis",
+    "capasity":"10 liters"
+ },
+ "created_at":"2023-08-25T12:00:00Z",
+ "updated_at":"2023-08-30T15:30:00Z",
+ "index":"products",
+ "store_id":"store_001"
+}
