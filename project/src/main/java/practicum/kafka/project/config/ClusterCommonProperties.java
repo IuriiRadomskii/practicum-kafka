@@ -2,6 +2,7 @@ package practicum.kafka.project.config;
 
 import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
+import lombok.Getter;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.config.TopicConfig;
@@ -9,9 +10,9 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import practicum.kafka.project.serialization.JsonDeserializer;
-import practicum.kafka.project.serialization.JsonSerializer;
+import practicum.kafka.project.serialization.JsonObjectSerializer;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -20,8 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-@Configuration
-public class AppConfig {
+@Getter
+@Component
+public class ClusterCommonProperties {
 
     @Value("${leader.host}")
     private String leaderHost;
@@ -29,14 +31,6 @@ public class AppConfig {
     private String cacertsLocation;
     @Value("${cacerts.password}")
     private String cacertsPassword;
-    @Value("${producer.user}")
-    private String producerUser;
-    @Value("${producer.password}")
-    private String producerPassword;
-    @Value("${consumer.user}")
-    private String consumerUser;
-    @Value("${consumer.password}")
-    private String consumerPassword;
     @Value("${jaas-template}")
     private String jaasTemplate;
 
@@ -52,7 +46,7 @@ public class AppConfig {
         props.put(ProducerConfig.REQUEST_TIMEOUT_MS_CONFIG, 500);
         props.put(ProducerConfig.SOCKET_CONNECTION_SETUP_TIMEOUT_MS_CONFIG, 500);
         props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class.getName());
+        props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonObjectSerializer.class.getName());
         props.put("security.protocol", "SASL_SSL");
         props.put("sasl.mechanism", "SCRAM-SHA-512");
         props.put("sasl.jaas.config", String.format(jaasTemplate, producerUser, producerPassword));

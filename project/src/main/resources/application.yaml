@@ -1,4 +1,3 @@
-number-of-messages: 50
 leader:
   host: rc1a-s89utbdt01tfp6hh.mdb.yandexcloud.net:9091
 schema-registry:
@@ -6,23 +5,19 @@ schema-registry:
   user: sr-user
   password: sr-user-password
 jaas-template: "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"%s\" password=\"%s\";"
-producer:
-  user: kafka-producer
-  password: kafka-producer-password
-
-consumer:
-  user: kafka-consumer
-  password: kafka-consumer-password
 cacerts:
   location: C:\\jdk\\java17\\lib\\security\\cacerts
   password: changeit
 
+shop:
+  topic: "data-products-topic"
+  producer:
+    username: shop-user
+    password: shop-user-password
+client:
+  topic: "data-client-requests-topic"
+  producer:
+    username: "client-user"
+    password: "client-user-password"
 
-run-task: 2
-
-task-1:
-  topic: cluster-topic
-task-2:
-  topic-source: nifi-source-topic
-  topic-sink: nifi-sink-topic
 

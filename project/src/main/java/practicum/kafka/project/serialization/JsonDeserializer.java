@@ -3,17 +3,16 @@ package practicum.kafka.project.serialization;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.common.serialization.Deserializer;
-import practicum.kafka.project.dto.User;
 
 @Slf4j
-public class JsonDeserializer implements Deserializer<User> {
+public class JsonDeserializer implements Deserializer<Object> {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public User deserialize(String topic, byte[] data) {
+    public Object deserialize(String topic, byte[] data) {
         try {
-            return mapper.readValue(data, User.class);
+            return mapper.readValue(data, Object.class);
         } catch (Exception e) {
             log.error("Unable to deserialize transaction status: {}", e.getMessage(), e);
             throw new RuntimeException(e);
