@@ -12,10 +12,9 @@ provider "yandex" {
   service_account_key_file = "key.json"
 }
 
-
-resource "yandex_mdb_kafka_cluster" "yuriyradomskiy" {
+resource "yandex_mdb_kafka_cluster" "yuriyradomskiy-cluster" {
   folder_id = "b1gh5kt0tm2akrua7dai"
-  name        = "kafka1241243"
+  name        = "kafka-cluster-123"
   environment = "PRODUCTION"
   network_id  = "enpdfapscr8vmpupl0c8"
   subnet_ids  = ["e2li34pgbv3ptap59t52", "e9bl5hrda0n3qv5ca5oo", "fl8e0ebsvu0cibc404er"]
@@ -63,7 +62,7 @@ resource "yandex_mdb_kafka_cluster" "yuriyradomskiy" {
 }
 
 resource "yandex_mdb_kafka_topic" "data-products-topic" {
-  cluster_id         = yandex_mdb_kafka_cluster.yuriyradomskiy.id
+  cluster_id         = yandex_mdb_kafka_cluster.yuriyradomskiy-cluster.id
   name               = "data-products-topic"
   partitions         = 3
   replication_factor = 3
@@ -85,7 +84,7 @@ resource "yandex_mdb_kafka_topic" "data-products-topic" {
 }
 
 resource "yandex_mdb_kafka_topic" "data-client-requests-topic" {
-  cluster_id         = yandex_mdb_kafka_cluster.yuriyradomskiy.id
+  cluster_id         = yandex_mdb_kafka_cluster.yuriyradomskiy-cluster.id
   name               = "data-client-requests-topic"
   partitions         = 3
   replication_factor = 3
@@ -107,7 +106,7 @@ resource "yandex_mdb_kafka_topic" "data-client-requests-topic" {
 }
 
 resource "yandex_mdb_kafka_user" "shop-user" {
-  cluster_id = yandex_mdb_kafka_cluster.yuriyradomskiy.id
+  cluster_id = yandex_mdb_kafka_cluster.yuriyradomskiy-cluster.id
   name       = "shop-user"
   password   = "shop-user-password"
   permission {
@@ -117,33 +116,11 @@ resource "yandex_mdb_kafka_user" "shop-user" {
 }
 
 resource "yandex_mdb_kafka_user" "client-user" {
-  cluster_id = yandex_mdb_kafka_cluster.yuriyradomskiy.id
+  cluster_id = yandex_mdb_kafka_cluster.yuriyradomskiy-cluster.id
   name       = "client-user"
   password   = "client-user-password"
   permission {
     topic_name  = "data-client-requests-topic"
     role        = "ACCESS_ROLE_PRODUCER"
-  }
-}
-
-resource "yandex_mdb_kafka_user" "mirror-user" {
-  cluster_id = yandex_mdb_kafka_cluster.yuriyradomskiy.id
-  name       = "mirror-user"
-  password   = "mirror-user-password"
-  permission {
-    topic_name  = "data-client-requests-topic"
-    role        = "ACCESS_ROLE_PRODUCER"
-  }
-  permission {
-    topic_name  = "data-client-requests-topic"
-    role        = "ACCESS_ROLE_CONSUMER"
-  }
-  permission {
-    topic_name  = "data-products-topic"
-    role        = "ACCESS_ROLE_PRODUCER"
-  }
-  permission {
-    topic_name  = "data-products-topic"
-    role        = "ACCESS_ROLE_CONSUMER"
   }
 }
