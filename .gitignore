@@ -10,3 +10,4 @@
 /sprint_6/infra/.kafka
 /sprint_6/infra/nifi
 /project/.secrets
+/project/target
