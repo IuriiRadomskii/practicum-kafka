@@ -1,0 +1,35 @@
+### create custom connector
+PUT http://localhost:8083/connectors/hdfs-connector/config
+Content-Type: application/json
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "connector.class": "io.confluent.connect.hdfs3.Hdfs3SinkConnector",
+  "store.url": "hdfs://hadoop-namenode:9000",
+  "hadoop.conf.dir": "/hadoop/config",
+  "hadoop.home": "",
+  "logs.dir": "",
+  "format.class": "io.confluent.connect.hdfs3.string.StringFormat",
+  "flush.size": "3",
+  "rotate.interval.ms": "1000",
+  "tasks.max": "1",
+  "confluent.topic.bootstrap.servers": "",
+  "topics": "data-products-topic",
+  "value.converter": "org.apache.kafka.connect.storage.StringConverter",
+  "key.converter": "org.apache.kafka.connect.storage.StringConverter"
+}
+
+###
+DELETE http://localhost:8083/connectors/hdfs-connector
+
+###
+
+PUT http://localhost:8083/connectors/hdfs-connector/start
+
+###
+GET http://localhost:8083/connectors
+
+###
+GET http://localhost:8083/connectors/hdfs-connector/status
