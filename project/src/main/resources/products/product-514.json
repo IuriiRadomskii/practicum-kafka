@@ -1,0 +1,37 @@
+{
+  "product_id": "0dac609a-0291-44c8-bf9b-123cbbebfd4d",
+  "name": "Smart Smoke Detector Fuguzzy9",
+  "description": "Smart Smoke Detector Fuguzzy9 description",
+  "price": {
+    "amount": "3110",
+    "currency": "RUB"
+  },
+  "category": "IoT devices",
+  "brand": "Fuguzzy9",
+  "stock": {
+    "available": "116",
+    "reserved": "81"
+  },
+  "sku": "Fuguzzy9-12345",
+  "tags": ["IoT devices"],
+  "images": [
+    {
+      "url": "https://example.com/images/front_view.jpg",
+      "alt": "Front-view"
+    },
+    {
+      "url": "https://example.com/images/side_view.jpg",
+      "alt": "Side-view"
+    }
+  ],
+  "specifications": {
+    "weight": "50g",
+    "dimensions": "42mm x 36mm x 10mm",
+    "battery_life": "24 hours",
+    "water_resistance": "IP68"
+  },
+  "created_at": "2023-10-01T12:00:00Z",
+  "updated_at": "2023-10-10T15:30:00Z",
+  "index": "index",
+  "store_id": "abracadabra"
+}

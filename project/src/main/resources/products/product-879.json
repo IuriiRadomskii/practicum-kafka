@@ -1,0 +1,37 @@
+{
+  "product_id": "1f0689fd-fab5-4478-962c-db2bc6505488",
+  "name": "Smart Vacuum Cleaner XYZ2",
+  "description": "Smart Vacuum Cleaner XYZ2 description",
+  "price": {
+    "amount": "1926",
+    "currency": "RUB"
+  },
+  "category": "IoT devices",
+  "brand": "XYZ2",
+  "stock": {
+    "available": "187",
+    "reserved": "90"
+  },
+  "sku": "XYZ2-12345",
+  "tags": ["IoT devices"],
+  "images": [
+    {
+      "url": "https://example.com/images/front_view.jpg",
+      "alt": "Front-view"
+    },
+    {
+      "url": "https://example.com/images/side_view.jpg",
+      "alt": "Side-view"
+    }
+  ],
+  "specifications": {
+    "weight": "50g",
+    "dimensions": "42mm x 36mm x 10mm",
+    "battery_life": "24 hours",
+    "water_resistance": "IP68"
+  },
+  "created_at": "2023-10-01T12:00:00Z",
+  "updated_at": "2023-10-10T15:30:00Z",
+  "index": "index",
+  "store_id": "abracadabra"
+}

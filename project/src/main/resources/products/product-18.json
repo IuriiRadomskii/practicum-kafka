@@ -1,0 +1,37 @@
+{
+  "product_id": "74087dc5-b18a-4504-bbd5-d6db1c2c4d7c",
+  "name": "Beef Fuguzzy2",
+  "description": "Beef Fuguzzy2 description",
+  "price": {
+    "amount": "9782",
+    "currency": "RUB"
+  },
+  "category": "Foods",
+  "brand": "Fuguzzy2",
+  "stock": {
+    "available": "155",
+    "reserved": "71"
+  },
+  "sku": "Fuguzzy2-12345",
+  "tags": ["Foods"],
+  "images": [
+    {
+      "url": "https://example.com/images/front_view.jpg",
+      "alt": "Front-view"
+    },
+    {
+      "url": "https://example.com/images/side_view.jpg",
+      "alt": "Side-view"
+    }
+  ],
+  "specifications": {
+    "weight": "50g",
+    "dimensions": "42mm x 36mm x 10mm",
+    "battery_life": "24 hours",
+    "water_resistance": "IP68"
+  },
+  "created_at": "2023-10-01T12:00:00Z",
+  "updated_at": "2023-10-10T15:30:00Z",
+  "index": "index",
+  "store_id": "abracadabra"
+}

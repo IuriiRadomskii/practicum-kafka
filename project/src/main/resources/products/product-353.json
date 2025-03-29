@@ -1,0 +1,37 @@
+{
+  "product_id": "661c94c6-8c50-48e9-a9a9-e2324a172b78",
+  "name": "Paper Clips Fuguzzy0",
+  "description": "Paper Clips Fuguzzy0 description",
+  "price": {
+    "amount": "8685",
+    "currency": "RUB"
+  },
+  "category": "Office supplies",
+  "brand": "Fuguzzy0",
+  "stock": {
+    "available": "123",
+    "reserved": "65"
+  },
+  "sku": "Fuguzzy0-12345",
+  "tags": ["Office supplies"],
+  "images": [
+    {
+      "url": "https://example.com/images/front_view.jpg",
+      "alt": "Front-view"
+    },
+    {
+      "url": "https://example.com/images/side_view.jpg",
+      "alt": "Side-view"
+    }
+  ],
+  "specifications": {
+    "weight": "50g",
+    "dimensions": "42mm x 36mm x 10mm",
+    "battery_life": "24 hours",
+    "water_resistance": "IP68"
+  },
+  "created_at": "2023-10-01T12:00:00Z",
+  "updated_at": "2023-10-10T15:30:00Z",
+  "index": "index",
+  "store_id": "abracadabra"
+}

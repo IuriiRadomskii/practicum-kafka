@@ -1,0 +1,37 @@
+{
+  "product_id": "1b4d5106-6273-42a2-9968-1df0cd6e7ebf",
+  "name": "Toaster Yandex5",
+  "description": "Toaster Yandex5 description",
+  "price": {
+    "amount": "1124",
+    "currency": "RUB"
+  },
+  "category": "Household appliances",
+  "brand": "Yandex5",
+  "stock": {
+    "available": "143",
+    "reserved": "49"
+  },
+  "sku": "Yandex5-12345",
+  "tags": ["Household appliances"],
+  "images": [
+    {
+      "url": "https://example.com/images/front_view.jpg",
+      "alt": "Front-view"
+    },
+    {
+      "url": "https://example.com/images/side_view.jpg",
+      "alt": "Side-view"
+    }
+  ],
+  "specifications": {
+    "weight": "50g",
+    "dimensions": "42mm x 36mm x 10mm",
+    "battery_life": "24 hours",
+    "water_resistance": "IP68"
+  },
+  "created_at": "2023-10-01T12:00:00Z",
+  "updated_at": "2023-10-10T15:30:00Z",
+  "index": "index",
+  "store_id": "abracadabra"
+}

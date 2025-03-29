@@ -1,0 +1,37 @@
+{
+  "product_id": "20ee6c38-ab34-4f2a-b4bf-a6828b01ae63",
+  "name": "Toaster Yandex7",
+  "description": "Toaster Yandex7 description",
+  "price": {
+    "amount": "1811",
+    "currency": "RUB"
+  },
+  "category": "Household appliances",
+  "brand": "Yandex7",
+  "stock": {
+    "available": "121",
+    "reserved": "59"
+  },
+  "sku": "Yandex7-12345",
+  "tags": ["Household appliances"],
+  "images": [
+    {
+      "url": "https://example.com/images/front_view.jpg",
+      "alt": "Front-view"
+    },
+    {
+      "url": "https://example.com/images/side_view.jpg",
+      "alt": "Side-view"
+    }
+  ],
+  "specifications": {
+    "weight": "50g",
+    "dimensions": "42mm x 36mm x 10mm",
+    "battery_life": "24 hours",
+    "water_resistance": "IP68"
+  },
+  "created_at": "2023-10-01T12:00:00Z",
+  "updated_at": "2023-10-10T15:30:00Z",
+  "index": "index",
+  "store_id": "abracadabra"
+}

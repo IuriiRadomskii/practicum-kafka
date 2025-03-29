@@ -1,0 +1,37 @@
+{
+  "product_id": "9b16bd86-5754-45c8-8435-5db7cf0172b9",
+  "name": "Vacuum cleaner Yandex3",
+  "description": "Vacuum cleaner Yandex3 description",
+  "price": {
+    "amount": "4056",
+    "currency": "RUB"
+  },
+  "category": "Household appliances",
+  "brand": "Yandex3",
+  "stock": {
+    "available": "145",
+    "reserved": "32"
+  },
+  "sku": "Yandex3-12345",
+  "tags": ["Household appliances"],
+  "images": [
+    {
+      "url": "https://example.com/images/front_view.jpg",
+      "alt": "Front-view"
+    },
+    {
+      "url": "https://example.com/images/side_view.jpg",
+      "alt": "Side-view"
+    }
+  ],
+  "specifications": {
+    "weight": "50g",
+    "dimensions": "42mm x 36mm x 10mm",
+    "battery_life": "24 hours",
+    "water_resistance": "IP68"
+  },
+  "created_at": "2023-10-01T12:00:00Z",
+  "updated_at": "2023-10-10T15:30:00Z",
+  "index": "index",
+  "store_id": "abracadabra"
+}

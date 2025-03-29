@@ -1,0 +1,37 @@
+{
+  "product_id": "58f34c92-5188-405b-8439-dfdb169373ab",
+  "name": "Bread Yandex9",
+  "description": "Bread Yandex9 description",
+  "price": {
+    "amount": "3625",
+    "currency": "RUB"
+  },
+  "category": "Foods",
+  "brand": "Yandex9",
+  "stock": {
+    "available": "128",
+    "reserved": "4"
+  },
+  "sku": "Yandex9-12345",
+  "tags": ["Foods"],
+  "images": [
+    {
+      "url": "https://example.com/images/front_view.jpg",
+      "alt": "Front-view"
+    },
+    {
+      "url": "https://example.com/images/side_view.jpg",
+      "alt": "Side-view"
+    }
+  ],
+  "specifications": {
+    "weight": "50g",
+    "dimensions": "42mm x 36mm x 10mm",
+    "battery_life": "24 hours",
+    "water_resistance": "IP68"
+  },
+  "created_at": "2023-10-01T12:00:00Z",
+  "updated_at": "2023-10-10T15:30:00Z",
+  "index": "index",
+  "store_id": "abracadabra"
+}

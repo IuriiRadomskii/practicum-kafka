@@ -1,0 +1,37 @@
+{
+  "product_id": "7e5a4336-c95f-4848-825a-4d98e97ca9d4",
+  "name": "Pen XYZ5",
+  "description": "Pen XYZ5 description",
+  "price": {
+    "amount": "9470",
+    "currency": "RUB"
+  },
+  "category": "Office supplies",
+  "brand": "XYZ5",
+  "stock": {
+    "available": "102",
+    "reserved": "5"
+  },
+  "sku": "XYZ5-12345",
+  "tags": ["Office supplies"],
+  "images": [
+    {
+      "url": "https://example.com/images/front_view.jpg",
+      "alt": "Front-view"
+    },
+    {
+      "url": "https://example.com/images/side_view.jpg",
+      "alt": "Side-view"
+    }
+  ],
+  "specifications": {
+    "weight": "50g",
+    "dimensions": "42mm x 36mm x 10mm",
+    "battery_life": "24 hours",
+    "water_resistance": "IP68"
+  },
+  "created_at": "2023-10-01T12:00:00Z",
+  "updated_at": "2023-10-10T15:30:00Z",
+  "index": "index",
+  "store_id": "abracadabra"
+}
