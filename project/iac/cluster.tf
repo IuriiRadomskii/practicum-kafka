@@ -124,3 +124,17 @@ resource "yandex_mdb_kafka_user" "client-user" {
     role        = "ACCESS_ROLE_PRODUCER"
   }
 }
+
+resource "yandex_mdb_kafka_user" "connector-user" {
+  cluster_id = yandex_mdb_kafka_cluster.yuriyradomskiy-cluster.id
+  name       = "connector-user"
+  password   = "connector-user-password"
+  permission {
+    topic_name  = "data-client-requests-topic"
+    role        = "ACCESS_ROLE_CONSUMER"
+  }
+  permission {
+    topic_name  = "data-products-topic"
+    role        = "ACCESS_ROLE_CONSUMER"
+  }
+}
