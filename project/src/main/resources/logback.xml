@@ -6,6 +6,7 @@
     </appender>
 
     <logger name="org.apache.kafka" level="INFO" additivity="true"/>
+    <logger name="org.atmosphere" level="ERROR" additivity="true"/>
 
     <root level="INFO">
         <appender-ref ref="STDOUT" />

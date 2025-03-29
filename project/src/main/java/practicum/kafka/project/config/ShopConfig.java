@@ -42,7 +42,7 @@ public class ShopConfig {
     }
 
     @Bean
-    public KafkaProducer<String, ProductInfo> productInfoKafkaProducer() {
+    public KafkaProducer<String, ProductInfo> shopProducer() {
         var props = getShopProducerProperties();
         var producer = new KafkaProducer<String, ProductInfo>(props);
         Runtime.getRuntime().addShutdownHook(new Thread(producer::close));

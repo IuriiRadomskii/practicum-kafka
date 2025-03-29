@@ -23,13 +23,16 @@ public class ShopService {
 
     private final KafkaProducer<String, ProductInfo> producer;
     private final String topic;
+    private final long delay;
 
     public ShopService(
             KafkaProducer<String, ProductInfo> producer,
-            @Value("${shop.topic}") String topic
+            @Value("${shop.topic}") String topic,
+            @Value("${shop.delay}") long delay
     ) {
         this.producer = producer;
         this.topic = topic;
+        this.delay = delay;
     }
 
     public void sendProduct(ProductInfo product) {
@@ -40,6 +43,12 @@ public class ShopService {
     public void readAndSendProducts() {
         List<ProductInfo> products = readProducts();
         products.forEach(product -> {
+            try {
+                Thread.sleep(delay);
+            } catch (InterruptedException e) {
+                log.warn("Shop delay interrupted: {}", e.getMessage());
+                Thread.currentThread().interrupt();
+            }
             producer.send(new ProducerRecord<>(topic, product.product_id(), product));
             log.info("Sent product with id: {}", product.product_id());
         });

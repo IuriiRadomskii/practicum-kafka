@@ -28,7 +28,7 @@ public class ClusterCommonProperties {
     private String cacertsPassword;
     @Value("${cluster.security.jaas-template}")
     private String jaasTemplate;
-    @Value("${cluster.security.on}")
+    @Value("${cluster.security.enabled}")
     private boolean securityOn;
 
     public Properties getSecurityProperties(String username, String password) {

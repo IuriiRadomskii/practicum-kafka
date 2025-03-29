@@ -1,6 +1,7 @@
 package practicum.kafka.project.components;
 
 import io.confluent.kafka.schemaregistry.ParsedSchema;
+import io.confluent.kafka.schemaregistry.client.CachedSchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClient;
 import io.confluent.kafka.schemaregistry.client.rest.exceptions.RestClientException;
 import io.confluent.kafka.schemaregistry.json.JsonSchema;
@@ -15,11 +16,9 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 @Slf4j
-@Component
-@RequiredArgsConstructor
 public class SchemaRegistryService {
 
-    private final SchemaRegistryClient client;
+    private final SchemaRegistryClient client = null;
 
     public String loadSchema(String name) {
         ClassPathResource classPathResource = new ClassPathResource("schemas/" + name);

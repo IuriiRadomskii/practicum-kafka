@@ -5,8 +5,12 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
 
 public class DataGenerator {
+
+    static Set<Integer> forbiddenProductNumber = Set.of(666, 777, 555, 333);
 
     static List<String> HOUSEHOLD_APPLIANCES = List.of("Household appliances", "Fridge", "TV", "Washing machine", "Dishwasher", "Vacuum cleaner", "Owen", "Toaster", "Blender");
     static List<String> IOT_DEVICES = List.of("IoT devices", "Smartbulb", "Smartswitch", "Smart Thermostat", "Smart Door Lock", "Smart Home Camera", "Smart Speaker", "Smart Display", "Smart Smoke Detector", "Smart Plug", "Smart Vacuum Cleaner");    static List<String> BOOKS = List.of("The Silent Ocean", "Moonlight Shadows", "Dreams in Time", "The Last Dreamwalker", "Echoes of the Past", "Whispers of the Desert", "Winter's Ghost", "Song of the Storm", "Dance of The Dragonfly", "Beneath the Pines");    static List<String> ELECTRONIC_DEVICES = List.of("Laptop", "Smartphone", "Tablet", "Headphones", "Camera", "Speaker", "Monitor", "Keyboard", "Mouse", "Printer");
@@ -24,9 +28,12 @@ public class DataGenerator {
         for (int i = 1; i <= 1000; i++) {
             String filename = "product-" + i + ".json";
             var nameCompanyTag = rnd();
-            System.out.println(Arrays.asList(nameCompanyTag));
+            var uuid = UUID.randomUUID();
+            if (forbiddenProductNumber.contains(i)) {
+                System.out.println(uuid);
+            }
             String fileContent = String.format(templateProduct,
-                    i,
+                    uuid,
                     nameCompanyTag[0],
                     nameCompanyTag[1],
                     nameCompanyTag[0],

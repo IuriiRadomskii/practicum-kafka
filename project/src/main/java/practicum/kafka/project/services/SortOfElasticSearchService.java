@@ -29,20 +29,14 @@ public class SortOfElasticSearchService implements InitializingBean {
     private final Path file = Path.of(System.getProperty("user.dir"))
             .resolve("products_storage");
     private final ObjectMapper objectMapper = new ObjectMapper();
-    @Value("${hdfs.consumer.username}")
+    @Value("${hdfs.user.username}")
     private String consumerUsername;
-    @Value("${hdfs.consumer.password}")
+    @Value("${hdfs.user.password}")
     private String consumerPassword;
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        if (Files.exists(file)) {
-            return;
-        }
-        Files.createFile(file);
-        while (true) {
-            consumeProducts();
-        }
+
     }
 
     public void consumeProducts() {
