@@ -2,6 +2,7 @@ package practicum.kafka.project;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -15,25 +16,28 @@ public class DataGenerator {
     static List<String> COMPANIES = List.of("XYZ", "Fuguzzy", "Thrilled Company", "PIPI", "Yandex");
 
     public static void main(String[] args) throws Exception {
-        Path resources = Path.of(System.getProperty("user.dir"), "src", "main", "resources");
+        Path resources = Path.of(System.getProperty("user.dir"), "project", "src", "main", "resources");
         Path template = resources.resolve("product-template.json");
         Path outDir = resources.resolve("products");
         String templateProduct = Files.readString(template);
         var random = new Random();
-        for (int i = 1; i <= 500; i++) {
+        for (int i = 1; i <= 1000; i++) {
             String filename = "product-" + i + ".json";
-            var arr = rnd();
+            var nameCompanyTag = rnd();
+            System.out.println(Arrays.asList(nameCompanyTag));
             String fileContent = String.format(templateProduct,
                     i,
-                    arr[0],
-                    arr[1],
-                    arr[0],
-                    arr[1],
+                    nameCompanyTag[0],
+                    nameCompanyTag[1],
+                    nameCompanyTag[0],
+                    nameCompanyTag[1],
                     random.nextInt(1000, 10000),
-                    arr[2],
-                    arr[1],
-                    arr[2],
-                    filename
+                    nameCompanyTag[2],
+                    nameCompanyTag[1],
+                    random.nextInt(100, 200),
+                    random.nextInt(0, 100),
+                    nameCompanyTag[1],
+                    nameCompanyTag[2]
             );
             Files.write(outDir.resolve(filename), fileContent.getBytes());
         }
@@ -45,8 +49,8 @@ public class DataGenerator {
         var list = products.get(random.nextInt(products.size()));
         var name = list.get(random.nextInt(1, list.size()));
         nameCompanyTag[0] = name;
-        nameCompanyTag[1] = list.get(0);
-        nameCompanyTag[2] = COMPANIES.get(random.nextInt(COMPANIES.size()));
+        nameCompanyTag[1] = COMPANIES.get(random.nextInt(COMPANIES.size())) + random.nextInt(0, 10);
+        nameCompanyTag[2] = list.get(0);
         return nameCompanyTag;
     }
 
