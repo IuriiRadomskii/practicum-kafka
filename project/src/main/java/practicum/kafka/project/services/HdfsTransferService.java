@@ -49,20 +49,16 @@ public class HdfsTransferService {
         conf.set("dfs.client.socket-timeout", "10000");
         conf.set("dfs.client.use.datanode.hostname", "true");
         try (FileSystem hdfs = FileSystem.get(new URI(hdfsUrl), conf, "root")) {
-            log.info("Open hdfs");
-            Path path = new Path(filePath);
-            if (!hdfs.exists(path)) {
-                try (FSDataOutputStream out = hdfs.create(path)) {
-                    log.info("Created hdfs file: {}", path.toUri());
+            log.info("Open hdfs filesystem");
+            for (int i = 0; i < 30; i++) {
+                Path path = new Path(filePath + i);
+                try (FSDataOutputStream out = hdfs.create(path, true)) {
+                    log.info("Created file: {}", path.toUri());
+                    out.writeUTF("Entry with number " + i);
                 }
             }
-            for (int i = 0; i < 30; i++) {
-                appendToHdfs(hdfs, path, "entry " + i + " \n");
-            }
-            try (FSDataInputStream in = hdfs.open(path)) {
-                log.info("Opened hdfs file: {}", new String(in.readAllBytes()));
-            }
-            log.info("End hdfs transfer");
+            log.info("Files added to hdfs data lake");
+            System.exit(1);
 
             /*try (KafkaConsumer<String, ClientRequest> consumer = new KafkaConsumer<>(props)) {
                 consumer.subscribe(hdfsTopics);

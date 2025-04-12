@@ -6,10 +6,12 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.config.TopicConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import practicum.kafka.project.dto.shop.ProductInfo;
 import practicum.kafka.project.serialization.JsonObjectSerializer;
+import practicum.kafka.project.services.ShopService;
 
 import java.util.Properties;
 
@@ -41,12 +43,22 @@ public class ShopConfig {
         return props;
     }
 
-    //@Bean
+    @Bean
     public KafkaProducer<String, ProductInfo> shopProducer() {
         var props = getShopProducerProperties();
         var producer = new KafkaProducer<String, ProductInfo>(props);
         Runtime.getRuntime().addShutdownHook(new Thread(producer::close));
         return producer;
+    }
+
+    @Bean
+    @ConditionalOnProperty(prefix = "shop", value = "enabled", havingValue = "true")
+    public ShopService shopService(
+            KafkaProducer<String, ProductInfo> producer,
+            @Value("${shop.topic}") String topic,
+            @Value("${shop.delay}") long delay
+    ) {
+        return new ShopService(producer, topic, delay);
     }
 
 }

@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-//@Service
 public class ShopService {
 
     private final KafkaProducer<String, ProductInfo> producer;

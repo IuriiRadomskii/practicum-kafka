@@ -14,6 +14,7 @@ schema-registry:
   password: "sr-user-password"
 
 shop:
+  enabled: false
   delay: 500
   topic: "data-products-topic-raw"
   user:
@@ -21,15 +22,20 @@ shop:
     password: "shop-user-password"
 
 client:
-  topic: "data-client-requests-topic"
+  enabled: true
+  producer-topic: "data-client-requests-topic"
+  consumer-topic: "data-client-products-topic"
+  consumer-recommendation-topic: "data-client-products-recommendation-topic"
+  poll-count: 5
+  poll-duration: 2
   user:
     username: "client-user"
     password: "client-user-password"
 
 hdfs:
-  disabled: false
+  disabled: true
   url: "hdfs://localhost:9000"
-  file-path: "hdfs://localhost:9000/data/client_requests.txt"
+  file-path: "hdfs://localhost:9000/data/entry_"
   topics: "data-client-requests-topic"
   user:
     username: "hdfs-user"
