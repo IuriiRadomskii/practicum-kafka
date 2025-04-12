@@ -34,11 +34,6 @@ public class ShopService {
         this.delay = delay;
     }
 
-    public void sendProduct(ProductInfo product) {
-        producer.send(new ProducerRecord<>(topic, product.getProduct_id(), product));
-        producer.flush();
-    }
-
     public void readAndSendProducts() {
         List<ProductInfo> products = readProducts();
         products.forEach(product -> {

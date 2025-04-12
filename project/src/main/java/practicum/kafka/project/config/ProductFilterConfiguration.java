@@ -85,7 +85,7 @@ public class ProductFilterConfiguration {
         return builder;
     }
 
-    //@Bean
+    @Bean
     public KafkaProducer<String, String> namesProducer() {
         Properties props = new Properties();
         props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, commonProps.getLeaderHost());

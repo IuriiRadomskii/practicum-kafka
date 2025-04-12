@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Properties;
 
 @Slf4j
-//@Service
+@Service
 public class ProductFilterService {
 
     private final KafkaProducer<String, String> producer;
@@ -40,7 +40,6 @@ public class ProductFilterService {
         for (String productName : productNames) {
             producer.send(new ProducerRecord<>(filterTopic, productName, productName));
         }
-
     }
 
     public void process() {

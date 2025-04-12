@@ -61,9 +61,57 @@ resource "yandex_mdb_kafka_cluster" "yuriyradomskiy-cluster" {
   }
 }
 
+#---------------------------------------------------------------------------------------------------------
+#-----------------------------------------------TOPICS----------------------------------------------------
+#---------------------------------------------------------------------------------------------------------
+
+resource "yandex_mdb_kafka_topic" "data-products-topic-raw" {
+  cluster_id         = yandex_mdb_kafka_cluster.yuriyradomskiy-cluster.id
+  name               = "data-products-topic-raw"
+  partitions         = 3
+  replication_factor = 3
+  topic_config {
+    cleanup_policy        = "CLEANUP_POLICY_COMPACT"
+    compression_type      = "COMPRESSION_TYPE_SNAPPY"
+    delete_retention_ms   = 86400000
+    file_delete_delay_ms  = 60000
+    flush_messages        = 128
+    flush_ms              = 1000
+    min_compaction_lag_ms = 0
+    retention_bytes       = 10737418240
+    retention_ms          = 604800000
+    max_message_bytes     = 1048588
+    min_insync_replicas   = 2
+    segment_bytes         = 268435456
+    preallocate           = false
+  }
+}
+
 resource "yandex_mdb_kafka_topic" "data-products-topic" {
   cluster_id         = yandex_mdb_kafka_cluster.yuriyradomskiy-cluster.id
   name               = "data-products-topic"
+  partitions         = 3
+  replication_factor = 3
+  topic_config {
+    cleanup_policy        = "CLEANUP_POLICY_COMPACT"
+    compression_type      = "COMPRESSION_TYPE_SNAPPY"
+    delete_retention_ms   = 86400000
+    file_delete_delay_ms  = 60000
+    flush_messages        = 128
+    flush_ms              = 1000
+    min_compaction_lag_ms = 0
+    retention_bytes       = 10737418240
+    retention_ms          = 604800000
+    max_message_bytes     = 1048588
+    min_insync_replicas   = 2
+    segment_bytes         = 268435456
+    preallocate           = false
+  }
+}
+
+resource "yandex_mdb_kafka_topic" "filter-names-topic" {
+  cluster_id         = yandex_mdb_kafka_cluster.yuriyradomskiy-cluster.id
+  name               = "filter-names-topic"
   partitions         = 3
   replication_factor = 3
   topic_config {
@@ -105,12 +153,60 @@ resource "yandex_mdb_kafka_topic" "data-client-requests-topic" {
   }
 }
 
+resource "yandex_mdb_kafka_topic" "data-client-products-topic" {
+  cluster_id         = yandex_mdb_kafka_cluster.yuriyradomskiy-cluster.id
+  name               = "data-client-products-topic"
+  partitions         = 3
+  replication_factor = 3
+  topic_config {
+    cleanup_policy        = "CLEANUP_POLICY_COMPACT"
+    compression_type      = "COMPRESSION_TYPE_SNAPPY"
+    delete_retention_ms   = 86400000
+    file_delete_delay_ms  = 60000
+    flush_messages        = 128
+    flush_ms              = 1000
+    min_compaction_lag_ms = 0
+    retention_bytes       = 10737418240
+    retention_ms          = 604800000
+    max_message_bytes     = 1048588
+    min_insync_replicas   = 2
+    segment_bytes         = 268435456
+    preallocate           = false
+  }
+}
+
+resource "yandex_mdb_kafka_topic" "data-client-products-recommendation-topic" {
+  cluster_id         = yandex_mdb_kafka_cluster.yuriyradomskiy-cluster.id
+  name               = "data-client-products-recommendation-topic"
+  partitions         = 3
+  replication_factor = 3
+  topic_config {
+    cleanup_policy        = "CLEANUP_POLICY_COMPACT"
+    compression_type      = "COMPRESSION_TYPE_SNAPPY"
+    delete_retention_ms   = 86400000
+    file_delete_delay_ms  = 60000
+    flush_messages        = 128
+    flush_ms              = 1000
+    min_compaction_lag_ms = 0
+    retention_bytes       = 10737418240
+    retention_ms          = 604800000
+    max_message_bytes     = 1048588
+    min_insync_replicas   = 2
+    segment_bytes         = 268435456
+    preallocate           = false
+  }
+}
+
+#---------------------------------------------------------------------------------------------------------
+#-----------------------------------------------USERS-----------------------------------------------------
+#---------------------------------------------------------------------------------------------------------
+
 resource "yandex_mdb_kafka_user" "shop-user" {
   cluster_id = yandex_mdb_kafka_cluster.yuriyradomskiy-cluster.id
   name       = "shop-user"
   password   = "shop-user-password"
   permission {
-    topic_name  = "data-products-topic"
+    topic_name  = "data-products-topic-raw"
     role        = "ACCESS_ROLE_PRODUCER"
   }
 }
@@ -123,18 +219,45 @@ resource "yandex_mdb_kafka_user" "client-user" {
     topic_name  = "data-client-requests-topic"
     role        = "ACCESS_ROLE_PRODUCER"
   }
+  permission {
+    topic_name  = "data-client-products-topic"
+    role        = "ACCESS_ROLE_CONSUMER"
+  }
+  permission {
+    topic_name  = "data-client-products-recommendation-topic"
+    role        = "ACCESS_ROLE_CONSUMER"
+  }
+  #TEST PERMISSION
+  permission {
+    topic_name  = "data-products-topic"
+    role        = "ACCESS_ROLE_CONSUMER"
+  }
 }
 
-resource "yandex_mdb_kafka_user" "connector-user" {
+resource "yandex_mdb_kafka_user" "hdfs-user" {
   cluster_id = yandex_mdb_kafka_cluster.yuriyradomskiy-cluster.id
-  name       = "connector-user"
-  password   = "connector-user-password"
+  name       = "hdfs-user"
+  password   = "hdfs-user-password"
   permission {
     topic_name  = "data-client-requests-topic"
     role        = "ACCESS_ROLE_CONSUMER"
   }
+}
+
+resource "yandex_mdb_kafka_user" "filter-user" {
+  cluster_id = yandex_mdb_kafka_cluster.yuriyradomskiy-cluster.id
+  name       = "filter-user"
+  password   = "filter-user-password"
+  permission {
+    topic_name  = "filter-names-topic"
+    role        = "ACCESS_ROLE_CONSUMER"
+  }
+  permission {
+    topic_name  = "data-products-topic-raw"
+    role        = "ACCESS_ROLE_CONSUMER"
+  }
   permission {
     topic_name  = "data-products-topic"
-    role        = "ACCESS_ROLE_CONSUMER"
+    role        = "ACCESS_ROLE_PRODUCER"
   }
 }

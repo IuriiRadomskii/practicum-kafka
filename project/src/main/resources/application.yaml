@@ -25,7 +25,8 @@ client:
   enabled: true
   producer-topic: "data-client-requests-topic"
   consumer-topic: "data-client-products-topic"
-  consumer-recommendation-topic: "data-client-products-recommendation-topic"
+  #consumer-recommendation-topic: "data-client-products-recommendation-topic"
+  consumer-recommendation-topic: "data-products-topic"#TEST
   poll-count: 5
   poll-duration: 2
   user:
