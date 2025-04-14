@@ -5,6 +5,7 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.config.TopicConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -54,7 +55,7 @@ public class ShopConfig {
     @Bean
     @ConditionalOnProperty(prefix = "shop", value = "enabled", havingValue = "true")
     public ShopService shopService(
-            KafkaProducer<String, ProductInfo> producer,
+            @Qualifier("shopProducer") KafkaProducer<String, ProductInfo> producer,
             @Value("${shop.topic}") String topic,
             @Value("${shop.delay}") long delay
     ) {

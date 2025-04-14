@@ -31,19 +31,7 @@ public class ProductInfoSerde extends Serdes.WrapperSerde<ProductInfo> {
     }
 
     public static Deserializer<ProductInfo> getDeserializer() {
-        return new Deserializer<ProductInfo>() {
-            private ObjectMapper mapper = new ObjectMapper();
-
-            @Override
-            public ProductInfo deserialize(String topic, byte[] data) {
-                try {
-                    return mapper.readValue(data, ProductInfo.class);
-                } catch (Exception e) {
-                    log.error("Unable to deserialize transaction status: {}", e.getMessage(), e);
-                    throw new RuntimeException(e);
-                }
-            }
-        };
+        return new ProductInfoDeserializer();
     }
 
 }

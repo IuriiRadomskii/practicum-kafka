@@ -21,6 +21,8 @@ public class ProductFilterService {
     private final Properties properties;
     private volatile boolean running = true;
 
+    @Value("${product-filter.enabled}")
+    private boolean enabled;
     @Value("${product-filter.topics.filter-names-topic}")
     private String filterTopic;
     @Value("${product-filter.filter-names-list}")
@@ -43,6 +45,10 @@ public class ProductFilterService {
     }
 
     public void process() {
+        if (!enabled) {
+            log.info("Skipping stream processing");
+            return;
+        }
         try (final KafkaStreams stream = new KafkaStreams(streamsBuilder.build(), properties)) {
             Runtime.getRuntime().addShutdownHook(new Thread(stream::close));
             stream.start();

@@ -44,7 +44,7 @@ public class ShopService {
                 Thread.currentThread().interrupt();
             }
             producer.send(new ProducerRecord<>(topic, product.getProduct_id(), product));
-            //log.info("Sent product with id: {}", product.product_id());
+            log.info("Sent product with id: {}", product.getProduct_id());
         });
         producer.flush();
     }

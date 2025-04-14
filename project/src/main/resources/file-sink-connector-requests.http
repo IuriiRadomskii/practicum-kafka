@@ -1,0 +1,26 @@
+PUT http://localhost:8083/connectors/file-stream-sink/config
+Content-Type: application/json
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.1.4
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+
+{
+  "name": "file-stream-sink",
+  "connector.class": "org.apache.kafka.connect.file.FileStreamSinkConnector",
+  "tasks.max": "1",
+  "topics": "data-products-topic",
+  "file": "data-products-topic.out",
+  "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+  "value.converter": "org.apache.kafka.connect.storage.StringConverter"
+}
+
+###
+GET http://localhost:8083/connectors
+###
+GET http://localhost:8083/connectors/file-stream-sink/status
+###
+PUT http://localhost:8083/connectors/file-stream-sink/start
+###
+PUT http://localhost:8083/connectors/file-stream-sink/stop
+###
+DELETE http://localhost:8083/connectors/file-stream-sink

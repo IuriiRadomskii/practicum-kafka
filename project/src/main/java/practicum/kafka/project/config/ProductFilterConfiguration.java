@@ -21,7 +21,6 @@ import practicum.kafka.project.dto.shop.ProductInfo;
 import practicum.kafka.project.serialization.CustomSerdes;
 import practicum.kafka.project.serialization.ProductInfoSerde;
 
-import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
