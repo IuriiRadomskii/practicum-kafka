@@ -35,7 +35,7 @@ client:
     password: "client-user-password"
 
 hdfs:
-  group-id: hdfs1
+  group-id: hdfs2
   disabled: false
   url: "hdfs://localhost:9000"
   file-path: "hdfs://localhost:9000/data/entry_"

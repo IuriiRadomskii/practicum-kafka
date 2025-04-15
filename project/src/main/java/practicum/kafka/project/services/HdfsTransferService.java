@@ -68,8 +68,8 @@ public class HdfsTransferService {
                         ClientRequest value = record.value();
                         Path path = new Path(filePath + i);
                         try (FSDataOutputStream out = hdfs.create(path, true)) {
-                            log.info("Created file: {}", path.toUri());
                             out.writeUTF(mapper.writeValueAsString(value));
+                            log.info("ClientRequest: {} added to hdfs file: {}", value, path);
                         }
                         i++;
                     }

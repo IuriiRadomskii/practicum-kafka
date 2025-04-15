@@ -17,7 +17,7 @@ services:
       - "9000:9000"
     volumes:
       - ./config/core-site.xml:/opt/hadoop/etc/hadoop/core-site.xml
-      - ./config/hdfs-site-namenode.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
+      - ./config/hdfs-site.xml:/opt/hadoop/etc/hadoop/hdfs-site.xml
       - ./scripts:/scripts
     entrypoint: [ "/bin/bash", "/scripts/namenode_entrypoint.sh" ]
     command: [ "hdfs", "namenode" ]
