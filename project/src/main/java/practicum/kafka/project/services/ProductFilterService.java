@@ -38,7 +38,7 @@ public class ProductFilterService {
         this.producer = namesProducer;
     }
 
-    public void addNames() {
+    public void addFilteredProductNames() {
         for (String productName : productNames) {
             producer.send(new ProducerRecord<>(filterTopic, productName, productName));
         }
@@ -49,6 +49,7 @@ public class ProductFilterService {
             log.info("Skipping stream processing");
             return;
         }
+        addFilteredProductNames();
         try (final KafkaStreams stream = new KafkaStreams(streamsBuilder.build(), properties)) {
             Runtime.getRuntime().addShutdownHook(new Thread(stream::close));
             stream.start();

@@ -1,7 +1,7 @@
-FQDN-cluster: "rc1a-ucd5vtjtfmua5ht2.mdb.yandexcloud.net"
-FQDN-replica: "rc1a-ucd5vtjtfmua5ht2.mdb.yandexcloud.net"
+FQDN-cluster: "rc1a-cl25ldolj3okh20q.mdb.yandexcloud.net"
+FQDN-replica: "rc1a-16eqvk8dq4fb9i47.mdb.yandexcloud.net"
 cluster:
-  leader-host: "rc1a-p3fep6citdomgeql.mdb.yandexcloud.net:9091,rc1b-gahbk5ff3stuog3o.mdb.yandexcloud.net:9091,rc1d-l7qjl9ntc0908ago.mdb.yandexcloud.net:9091"
+  leader-host: "${FQDN-cluster}:9091"
   security:
     enabled: true
     jaas-template: "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"%s\" password=\"%s\";"
@@ -33,7 +33,7 @@ client:
     password: "client-user-password"
 
 hdfs:
-  group-id: hdfs-replica-1
+  group-id: hdfs-replica-2
   disabled: false
   url: "hdfs://localhost:9000"
   file-path: "hdfs://localhost:9000/data/entry_"

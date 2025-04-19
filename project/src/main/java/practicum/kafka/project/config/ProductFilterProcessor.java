@@ -34,12 +34,14 @@ public class ProductFilterProcessor implements Processor<UUID, ProductInfo, UUID
         }
         var productInfo = record.value();
         var names = store.get("key");
+        log.info("Names: {}", names);
         for (String name : names) {
             if (productInfo.getName().startsWith(name)) {
                 log.info("Skipped product {}:{}", productInfo.getProduct_id(), productInfo.getName());
                 return;
             }
         }
+        log.info("Forward product: {}", productInfo.getName());
         context.forward(record);
     }
 

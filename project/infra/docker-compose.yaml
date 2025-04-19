@@ -111,7 +111,7 @@ services:
       - "9875:9875"
       - "9876:9876"
     environment:
-      CONNECT_BOOTSTRAP_SERVERS: rc1a-p3fep6citdomgeql.mdb.yandexcloud.net:9091
+      CONNECT_BOOTSTRAP_SERVERS: rc1a-cl25ldolj3okh20q.mdb.yandexcloud.net:9091
       CONNECT_REST_PORT: 8083
       CONNECT_GROUP_ID: 'kafka-connect'
 
