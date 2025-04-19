@@ -102,116 +102,93 @@ services:
     networks:
       - proxynet
 
-  spark-master:
-    image: bitnami/spark:3.5.4
-    container_name: spark-master
+  kafka-connect:
+    build:
+      context: ./kafka-connect
     ports:
-      - "7080:8080"  # HTTP-порт для Web UI Spark
-      - "7077:7077"  # Порт для Spark master-сервис
+      - "8083:8083"
+      - "8384:8384"
+      - "9875:9875"
+      - "9876:9876"
     environment:
-      SPARK_MODE: master
-      SPARK_MASTER_HOST: spark-master
+      CONNECT_BOOTSTRAP_SERVERS: rc1a-p3fep6citdomgeql.mdb.yandexcloud.net:9091
+      CONNECT_REST_PORT: 8083
+      CONNECT_GROUP_ID: 'kafka-connect'
+
+      CONNECT_REST_ADVERTISED_HOST_NAME: 'localhost'
+
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+
+      CONNECT_CONFIG_STORAGE_TOPIC: 'connect-config-storage'
+      CONNECT_OFFSET_STORAGE_TOPIC: 'connect-offset-storage'
+      CONNECT_STATUS_STORAGE_TOPIC: 'connect-status-storage'
+
+      CONNECT_KEY_CONVERTER: "io.confluent.connect.avro.AvroConverter"
+      CONNECT_VALUE_CONVERTER: "io.confluent.connect.avro.AvroConverter"
+
+      CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+      CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
+
+      CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: 'https://rc1a-p3fep6citdomgeql.mdb.yandexcloud.net:443/'
+      CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: 'https://rc1a-p3fep6citdomgeql.mdb.yandexcloud.net:443/'
+
+      CONNECT_CONFIG_PROVIDERS: "file"
+      CONNECT_CONFIG_PROVIDERS_FILE_CLASS: "org.apache.kafka.common.config.provider.FileConfigProvider"
+      CONNECT_PLUGIN_PATH: /usr/share/java,/etc/kafka-connect/jars
+
+      CONNECT_SECURITY_PROTOCOL: "SASL_SSL"
+      CONNECT_SASL_MECHANISM: "SCRAM-SHA-512"
+      CONNECT_SASL_JAAS_CONFIG: "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"connect-user\" password=\"connect-user-password\";"
+      CONNECT_SSL_TRUSTSTORE_LOCATION: /cacerts/cacerts
+      CONNECT_SSL_TRUSTSTORE_PASSWORD: changeit
+
+      CONNECT_CONSUMER_SECURITY_PROTOCOL: "SASL_SSL"
+      CONNECT_CONSUMER_SASL_MECHANISM: "SCRAM-SHA-512"
+      CONNECT_CONSUMER_SASL_JAAS_CONFIG: "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"connect-user\" password=\"connect-user-password\";"
+      CONNECT_CONSUMER_SSL_TRUSTSTORE_LOCATION: /cacerts/cacerts
+      CONNECT_CONSUMER_SSL_TRUSTSTORE_PASSWORD: changeit
+    volumes:
+      - ./confluent-hub-components/:/etc/kafka-connect/jars
+      - ./kafka-connect/:/cacerts/
+      - ./output/:/home/appuser/
     networks:
       - proxynet
 
-  spark-worker-1:
-    image: bitnami/spark:3.5.4
-    container_name: spark-worker-1
-    depends_on:
-      - spark-master
-    environment:
-      SPARK_MODE: worker
-      SPARK_MASTER_URL: spark://spark-master:7077
-    networks:
-      - proxynet
-
-  spark-worker-2:
-    image: bitnami/spark:3.5.4
-    container_name: spark-worker-2
-    depends_on:
-      - spark-master
-    environment:
-      SPARK_MODE: worker
-      SPARK_MASTER_URL: spark://spark-master:7077
-    networks:
-      - proxynet
-
-  #kafka-connect:
-  #  build:
-  #    context: ./kafka-connect
-  #  ports:
-  #    - "8083:8083"
-  #    - "8384:8384"
-  #    - "9875:9875"
-  #    - "9876:9876"
-  #  environment:
-  #    CONNECT_BOOTSTRAP_SERVERS: rc1a-ucd5vtjtfmua5ht2.mdb.yandexcloud.net:9091
-  #    CONNECT_REST_PORT: 8083
-  #    CONNECT_GROUP_ID: 'kafka-connect'
-
-  #    CONNECT_REST_ADVERTISED_HOST_NAME: 'localhost'
-
-  #    CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
-  #    CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
-  #    CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
-
-  #    CONNECT_CONFIG_STORAGE_TOPIC: 'connect-config-storage'
-  #    CONNECT_OFFSET_STORAGE_TOPIC: 'connect-offset-storage'
-  #    CONNECT_STATUS_STORAGE_TOPIC: 'connect-status-storage'
-
-  #    CONNECT_KEY_CONVERTER: "io.confluent.connect.avro.AvroConverter"
-  #    CONNECT_VALUE_CONVERTER: "io.confluent.connect.avro.AvroConverter"
-
-  #    CONNECT_INTERNAL_KEY_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-  #    CONNECT_INTERNAL_VALUE_CONVERTER: "org.apache.kafka.connect.json.JsonConverter"
-
-  #    CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL: 'https://rc1a-ucd5vtjtfmua5ht2.mdb.yandexcloud.net:443/'
-  #    CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL: 'https://rc1a-ucd5vtjtfmua5ht2.mdb.yandexcloud.net:443/'
-
-  #    CONNECT_CONFIG_PROVIDERS: "file"
-  #    CONNECT_CONFIG_PROVIDERS_FILE_CLASS: "org.apache.kafka.common.config.provider.FileConfigProvider"
-  #    CONNECT_PLUGIN_PATH: /usr/share/java,/etc/kafka-connect/jars
-
-  #    CONNECT_SECURITY_PROTOCOL: "SASL_SSL"
-  #    CONNECT_SASL_MECHANISM: "SCRAM-SHA-512"
-  #    CONNECT_SASL_JAAS_CONFIG: "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"connect-user\" password=\"connect-user-password\";"
-  #    CONNECT_SSL_TRUSTSTORE_LOCATION: /cacerts/cacerts
-  #    CONNECT_SSL_TRUSTSTORE_PASSWORD: changeit
-
-  #    CONNECT_CONSUMER_SECURITY_PROTOCOL: "SASL_SSL"
-  #    CONNECT_CONSUMER_SASL_MECHANISM: "SCRAM-SHA-512"
-  #    CONNECT_CONSUMER_SASL_JAAS_CONFIG: "org.apache.kafka.common.security.scram.ScramLoginModule required username=\"connect-user\" password=\"connect-user-password\";"
-  #    CONNECT_CONSUMER_SSL_TRUSTSTORE_LOCATION: /cacerts/cacerts
-  #    CONNECT_CONSUMER_SSL_TRUSTSTORE_PASSWORD: changeit
-  #  volumes:
-  #      - ./confluent-hub-components/:/etc/kafka-connect/jars
-  #      - ./kafka-connect/:/cacerts/
-  #      - ./output/:/home/appuser/
-  #  networks:
-  #    - proxynet
-
-  #metric-collector:
-  #  image: alexblacknn/metric-collector:0.0.1
-  #  networks:
-  #    - proxynet
-  #
-  #prometheus:
-  #  image: prom/prometheus:v2.30.3
-  #  ports:
-  #    - "9090:9090"
-  #  volumes:
-  #    - ./prometheus:/etc/prometheus
-  #  command: --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
-  #  networks:
-  #    - proxynet
-  #
-  #grafana:
-  #  build:
-  #    context: ./grafana
-  #  ports:
-  #    - "3000:3000"
-  #  networks:
-  #    - proxynet
+#  spark-master: #it ups and runs but can't execute client code, meh
+#    image: bitnami/spark:3.5.4
+#    container_name: spark-master
+#    ports:
+#      - "7080:8080"  # HTTP-порт для Web UI Spark
+#      - "7077:7077"  # Порт для Spark master-сервис
+#    environment:
+#      SPARK_MODE: master
+#      SPARK_MASTER_HOST: spark-master
+#    networks:
+#      - proxynet
+#
+#  spark-worker-1:
+#    image: bitnami/spark:3.5.4
+#    container_name: spark-worker-1
+#    depends_on:
+#      - spark-master
+#    environment:
+#      SPARK_MODE: worker
+#      SPARK_MASTER_URL: spark://spark-master:7077
+#    networks:
+#      - proxynet
+#
+#  spark-worker-2:
+#    image: bitnami/spark:3.5.4
+#    container_name: spark-worker-2
+#    depends_on:
+#      - spark-master
+#    environment:
+#      SPARK_MODE: worker
+#      SPARK_MASTER_URL: spark://spark-master:7077
+#    networks:
+#      - proxynet
 
 networks:
   proxynet:

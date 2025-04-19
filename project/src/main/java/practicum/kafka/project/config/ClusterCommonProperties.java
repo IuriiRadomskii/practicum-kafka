@@ -55,19 +55,4 @@ public class ClusterCommonProperties {
         return props;
     }
 
-    public SchemaRegistryClient schemaRegistryClient(
-            @Value("${schema-registry.url}") String schemaRegistryUrl,
-            @Value("${schema-registry.user}") String srUser,
-            @Value("${schema-registry.password}") String srPassword
-    ) {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Basic " + Base64.getEncoder().encodeToString((srUser + ":" + srPassword).getBytes(StandardCharsets.UTF_8)));
-        return new CachedSchemaRegistryClient(
-                schemaRegistryUrl,
-                10,
-                Collections.emptyMap(),
-                headers
-        );
-    }
-
 }

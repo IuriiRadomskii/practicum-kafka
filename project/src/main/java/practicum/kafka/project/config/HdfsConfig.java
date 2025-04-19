@@ -2,6 +2,7 @@ package practicum.kafka.project.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,13 +20,17 @@ public class HdfsConfig {
     private String hdfsUser;
     @Value("${hdfs.user.password}")
     private String hdfsPassword;
+    @Value("${replica.leader-host}")
+    private String replicaLeaderHost;
 
     @Bean
     public Properties hdfsConsumerProps() {
-        return commonProps.getCommonConsumerProperties(
+        var replicaConsumer = commonProps.getCommonConsumerProperties(
                 hdfsUser,
                 hdfsPassword
         );
+        replicaConsumer.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, replicaLeaderHost);
+        return replicaConsumer;
     }
 
 }

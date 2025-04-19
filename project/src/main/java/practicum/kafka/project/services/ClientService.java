@@ -66,24 +66,6 @@ public class ClientService {
         return List.of();
     }
 
-    public List<ProductInfo> getTestProducts() {
-        testConsumer.subscribe(List.of(testTopic));
-        for (int i = 0; i < pollCount; i++) {
-            ConsumerRecords<UUID, ProductInfo> records = testConsumer.poll(Duration.ofSeconds(pollDuration));
-            if (records.count() == 0) {
-                log.info("Recommendation of {} not found", testConsumer);
-                continue;
-            }
-            List<ProductInfo> result = new ArrayList<>();
-            records.forEach(record -> result.add(record.value()));
-            testConsumer.commitSync();
-            testConsumer.unsubscribe();
-            return result;
-        }
-        log.warn("Recommendation of {} not found", testConsumer);
-        return List.of();
-    }
-
     private List<ProductInfo> getProductFromDB(String name) {
         Path dataProductsTopicOutFile = Path.of(System.getProperty("user.dir"),
                 "project", "infra", "output", "data-products-topic.out");
