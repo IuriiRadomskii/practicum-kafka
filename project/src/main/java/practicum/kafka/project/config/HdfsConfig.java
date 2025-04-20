@@ -29,7 +29,7 @@ public class HdfsConfig {
                 hdfsUser,
                 hdfsPassword
         );
-        replicaConsumer.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, replicaLeaderHost);
+        //replicaConsumer.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, replicaLeaderHost);
         return replicaConsumer;
     }
 

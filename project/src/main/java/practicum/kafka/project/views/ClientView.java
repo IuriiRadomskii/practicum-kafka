@@ -8,6 +8,7 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import lombok.extern.slf4j.Slf4j;
 import practicum.kafka.project.services.ClientService;
+import practicum.kafka.project.services.ConnectService;
 import practicum.kafka.project.services.HdfsTransferService;
 import practicum.kafka.project.services.ShopService;
 
@@ -23,21 +24,25 @@ public class ClientView extends VerticalLayout {
     private final ObjectMapper objectMapper;
     private final ShopService shopService;
     private final HdfsTransferService hdfsTransferService;
+    private final ConnectService connectService;
 
     public ClientView(
             ClientService clientService,
             ShopService shopService,
-            HdfsTransferService hdfsTransferService
+            HdfsTransferService hdfsTransferService,
+            ConnectService connectService
     ) {
         this.clientService = clientService;
         this.shopService = shopService;
         this.hdfsTransferService = hdfsTransferService;
         this.objectMapper = new ObjectMapper();
+        this.connectService = connectService;
         setup();
     }
 
     public void setup() {
         Button shopButton = new Button("Start producing product");
+        Button connectButton = new Button("Run file connector");
         Button hdfsButton = new Button("Start transferring client requests to HDFS");
         TextField nameField = new TextField("Name");
         Button searchButton = new Button("Find by name");
@@ -46,6 +51,7 @@ public class ClientView extends VerticalLayout {
         Div displayPane2 = new Div();
 
         shopButton.addClickListener(buttonClickEvent -> executorService.submit(shopService::readAndSendProducts));
+        connectButton.addClickListener(buttonClickEvent -> executorService.submit(connectService::runFileConnector));
         hdfsButton.addClickListener(buttonClickEvent -> executorService.submit(hdfsTransferService::transferDataToHdfs));
 
         searchButton.addClickListener(event -> {
@@ -75,6 +81,6 @@ public class ClientView extends VerticalLayout {
             }
         });
 
-        add(shopButton, hdfsButton, nameField, searchButton, displayPane1, recommendationButton, displayPane2);
+        add(shopButton, connectButton, hdfsButton, nameField, searchButton, displayPane1, recommendationButton, displayPane2);
     }
 }
